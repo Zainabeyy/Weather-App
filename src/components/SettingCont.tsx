@@ -2,15 +2,18 @@
 
 import React from "react";
 import Image from "next/image";
+import { selectedUnitsType, UnitKeys } from "@/type";
 
 export default function SettingCont() {
   const [showSetting, setShowSetting] = React.useState(false);
-  const [selectedUnits, setSelectedUnits] = React.useState({
+  const [selectedUnits, setSelectedUnits] = React.useState<selectedUnitsType>({
     Temperature: "Celsius (°C)",
     "Wind Speed": "km/h",
     Precipitation: "Millimeters (mm)",
   });
-  const units = [
+
+
+  const units: { title: UnitKeys ; unit1: string; unit2: string }[] = [
     {
       title: "Temperature",
       unit1: "Celsius (°C)",
@@ -28,7 +31,7 @@ export default function SettingCont() {
     },
   ];
 
-  const handleSelect = (title: string, unit: string) => {
+  const handleSelect = (title: UnitKeys, unit: string) => {
     setSelectedUnits((prev) => ({ ...prev, [title]: unit }));
   };
   return (
@@ -66,11 +69,11 @@ export default function SettingCont() {
               {item.title}
             </p>
 
-            {[item.unit1, item.unit2].map((unit) => {
+            {[item.unit1, item.unit2].map((unit, index) => {
               const isSelected = selectedUnits[item.title] === unit;
               return (
                 <div
-                  key={unit}
+                  key={index}
                   onClick={() => handleSelect(item.title, unit)}
                   className={`py-2.5 px-2 flex justify-between items-center rounded-lg cursor-pointer transition 
                   ${
