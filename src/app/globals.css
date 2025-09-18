@@ -28,8 +28,14 @@
 }
 
 @layer utilities {
-  .text-preset5{
+  .text-preset-xl{
     @apply font-medium text-xl;
+  }
+  .text-preset-lg{
+    @apply font-medium text-lg;
+  }
+  .text-preset-base{
+    @apply font-medium text-base;
   }
   .seprator{
     @apply w-full h-[1px] bg-neutral-600;

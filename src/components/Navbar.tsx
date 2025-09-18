@@ -6,11 +6,10 @@ export default function Navbar() {
   return (
     <header className="flex items-center justify-between">
       <Image
-        src="./logo.svg"
+        src="logo.svg"
         alt="logo"
         width={138}
         height={28}
-        unoptimized
         className="w-[8.625rem] md:w-[12.25rem]"
       />
       <SettingCont/>
