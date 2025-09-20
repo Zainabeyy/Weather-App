@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import SearchForm from "@/components/SearchForm";
-import WeatherDataComp from "@/components/WeatherDataComp";
+import WeatherDataComp from "@/components/WeatherComp";
 import React from "react";
 
 export default async function Home({
@@ -12,7 +12,6 @@ export default async function Home({
 }) {
   const query = (await searchParams)?.query?.trim() || "";
   const city=query.split(',');
-  console.log(city)
   return (
     <div>
       <Navbar />

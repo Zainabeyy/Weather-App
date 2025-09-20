@@ -25,19 +25,35 @@
     font-family: Arial, Helvetica, sans-serif;
     @apply bg-neutral-900 text-neutral-0 text-lg p-4 md:p-6 lg:px-28 lg:py-12;
   }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #302f4a; /* thumb color */
+    border-radius: 0.125rem;
+    border: 1px solid #3C3B5E;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent; /* track color */
+  }
 }
 
 @layer utilities {
-  .text-preset-xl{
-    @apply font-medium text-xl;
+  .text-preset-xl {
+    @apply font-medium text-xl ;
   }
-  .text-preset-lg{
+  .text-preset-lg {
     @apply font-medium text-lg;
   }
-  .text-preset-base{
+  .text-preset-base {
     @apply font-medium text-base;
   }
-  .seprator{
+  .seprator {
     @apply w-full h-[1px] bg-neutral-600;
+  }
+  .container-border {
+    @apply border-[1px] border-neutral-600;
   }
 }

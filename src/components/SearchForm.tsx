@@ -1,15 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { cityInfoType } from "@/type";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 export default function SearchForm({ query }: { query: string }) {
   const [inputValue, setInputValue] = useState(query || "");
   const [suggestions, setSuggestions] = useState<cityInfoType[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter(); // Initialize router
 
-  // Fetch city suggestions while typing
+  // ... (useEffect for fetching suggestions remains the same)
+
   useEffect(() => {
     if (inputValue.length < 2) {
       setSuggestions([]);
@@ -17,29 +21,41 @@ export default function SearchForm({ query }: { query: string }) {
       return;
     }
 
+    const controller = new AbortController();
+    const { signal } = controller;
+
     const fetchCities = async () => {
       try {
         const res = await fetch(
           `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
             inputValue
-          )}&count=4&language=en&format=json`
+          )}&count=4&language=en&format=json`,
+          { signal }
         );
         const data = await res.json();
         setSuggestions(data.results || []);
         setHighlightedIndex(-1);
       } catch (err) {
-        console.error("Error fetching city suggestions:", err);
+        if (err instanceof DOMException && err.name === "AbortError") {
+          console.log("Fetch aborted.");
+        } else {
+          console.error("Error fetching city suggestions:", err);
+        }
       }
     };
 
     const debounce = setTimeout(fetchCities, 400);
-    return () => clearTimeout(debounce);
+    return () => {
+      clearTimeout(debounce);
+      controller.abort();
+    };
   }, [inputValue]);
 
   const handleSelect = (city: cityInfoType) => {
-    setInputValue(`${city.name}, ${city.country}`);
     setSuggestions([]);
     setHighlightedIndex(-1);
+    // Programmatically navigate instead of updating state
+    router.push(`/?query=${encodeURIComponent(city.name)}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -58,12 +74,21 @@ export default function SearchForm({ query }: { query: string }) {
     } else if (e.key === "Enter") {
       if (highlightedIndex >= 0) {
         e.preventDefault();
+        // Select and navigate immediately
         handleSelect(suggestions[highlightedIndex]);
       }
     } else if (e.key === "Escape") {
       setSuggestions([]);
       setHighlightedIndex(-1);
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (inputValue.trim() !== "") {
+      router.push(`/?query=${encodeURIComponent(inputValue)}`);
+    }
+    setSuggestions([]);
   };
 
   return (
@@ -73,8 +98,9 @@ export default function SearchForm({ query }: { query: string }) {
       </h2>
 
       <form
-        action="/"
+        ref={formRef}
         className="text-preset-xl gap-3 md:gap-4 flex flex-col sm:flex-row justify-center items-center relative"
+        onSubmit={handleSubmit}
       >
         <div className="flex flex-col w-full max-w-[32.875rem] relative">
           <div className="flex items-center gap-4 bg-neutral-800 py-4 px-6 rounded-xl">

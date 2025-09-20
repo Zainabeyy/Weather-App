@@ -3,13 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import { unitsType } from "@/type";
+import { useUnits } from "@/hooks/UnitsContext";
 
 export default function SettingCont() {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [showSetting, setShowSetting] = React.useState(false);
-  const [selectedUnits, setSelectedUnits] = React.useState<
-    "imperial" | "metric"
-  >("imperial");
+  const { units: selectedUnits, setUnits } = useUnits();
 
   const units: unitsType[] = [
     {
@@ -59,12 +58,11 @@ export default function SettingCont() {
   }, []);
 
   const handleSelect = () => {
-    setSelectedUnits((prev) => (prev === "imperial" ? "metric" : "imperial"));
+    setUnits((prev) => (prev === "imperial" ? "metric" : "imperial"));
   };
 
   return (
     <div className="relative" ref={containerRef}>
-
       {/* ---- unit setting button ---- */}
 
       <button
@@ -103,9 +101,8 @@ export default function SettingCont() {
         aria-label="Units settings"
         className={`${
           showSetting ? "visible" : "hidden"
-        } py-1.5 px-2 absolute bg-neutral-800 w-[13.375rem] right-0 rounded-xl mt-2.5`}
+        } py-1.5 px-2 absolute bg-neutral-800 w-[13.375rem] right-0 rounded-xl mt-2.5 z-100`}
       >
-
         <button
           type="button"
           onClick={handleSelect}
@@ -128,7 +125,7 @@ export default function SettingCont() {
         </button>
 
         {/* ---- units items ---- */}
-        
+
         {units.map((item, index) => (
           <div key={index}>
             <p className="pl-2 pt-1.5 text-sm font-medium text-neutral-300 mb-2">
@@ -148,7 +145,7 @@ export default function SettingCont() {
                         ? "bg-neutral-700"
                         : "text-neutral-300"
                     }`}
-                  onClick={() => setSelectedUnits(unit.type)}
+                  onClick={() => setUnits(unit.type)}
                 >
                   <p className="text-preset-base">{unit.name}</p>
                   {selectedUnits === unit.type && (

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
+import { UnitsProvider } from "@/hooks/UnitsContext";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${bricolageGrotesque.variable} antialiased`}
       >
-        {children}
+        <UnitsProvider>{children}</UnitsProvider>
       </body>
     </html>
   );
