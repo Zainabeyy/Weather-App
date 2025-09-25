@@ -9,21 +9,20 @@ interface UnitsContextType {
   setUnits: React.Dispatch<React.SetStateAction<Units>>;
 }
 
-const UnitsContext = React.createContext<UnitsContextType | undefined>(
-  undefined
-);
+const UnitsContext = React.createContext<UnitsContextType>({
+  units: "metric",
+  setUnits: () => {},
+});
 
 export function UnitsProvider({ children }: { children: React.ReactNode }) {
-  const [units, setUnits] = React.useState<Units>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("units");
-      if (stored === "imperial" || stored === "metric") {
-        return stored;
-      }
-    }
-    return "imperial"; // default
-  });
+  const [units, setUnits] = React.useState<Units>('metric');
 
+   React.useEffect(() => {
+    const stored = localStorage.getItem("units");
+    if (stored === "imperial" || stored === "metric") {
+      setUnits(stored);
+    }
+  }, []);
   React.useEffect(() => {
     localStorage.setItem("units", units);
   }, [units]);

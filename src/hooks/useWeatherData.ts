@@ -7,23 +7,11 @@ import {
   ReverseGeocodeResult,
   weatherDataType,
 } from "@/type";
-import { useUnits } from "./UnitsContext";
 
 // ---- fetching data from api ----
 
-async function fetchWeather(
-  lat: number,
-  lon: number,
-  signal: AbortSignal,
-  units: "metric" | "imperial"
-) {
-  const isMetric = units === "metric";
-
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,apparent_temperature,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=7&temperature_unit=${
-    isMetric ? "celsius" : "fahrenheit"
-  }&windspeed_unit=${isMetric ? "kmh" : "mph"}&precipitation_unit=${
-    isMetric ? "mm" : "inch"
-  }`;
+async function fetchWeather(lat: number, lon: number, signal: AbortSignal) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,apparent_temperature,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&forecast_days=7`;
 
   const res = await fetch(url, { signal });
   if (!res.ok) {
@@ -73,7 +61,6 @@ export default function useWeatherData(cityName?: string) {
     null
   );
   const [cityInfo, setCityInfo] = React.useState<cityInfoType | null>(null);
-  const { units } = useUnits();
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -95,8 +82,7 @@ export default function useWeatherData(cityName?: string) {
           const weather = await fetchWeather(
             geoData.latitude,
             geoData.longitude,
-            signal,
-            units
+            signal
           );
           setWeatherData(weather);
         } else if (navigator.geolocation) {
@@ -123,8 +109,7 @@ export default function useWeatherData(cityName?: string) {
           const weather = await fetchWeather(
             position.coords.latitude,
             position.coords.longitude,
-            signal,
-            units
+            signal
           );
           setWeatherData(weather);
         } else {
@@ -139,6 +124,7 @@ export default function useWeatherData(cityName?: string) {
           setError(
             err instanceof Error ? err.message : "An unexpected error occurred."
           );
+          console.log('Error: ',err)
         }
       } finally {
         if (!signal.aborted) {

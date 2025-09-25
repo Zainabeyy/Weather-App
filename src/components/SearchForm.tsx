@@ -1,18 +1,19 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { cityInfoType } from "@/type";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import { Search } from "lucide-react";
 
 export default function SearchForm({ query }: { query: string }) {
   const [inputValue, setInputValue] = useState(query || "");
   const [suggestions, setSuggestions] = useState<cityInfoType[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
 
-  // ... (useEffect for fetching suggestions remains the same)
+  useClickOutside(formRef, () => setSuggestions([]));
 
   useEffect(() => {
     if (inputValue.length < 2) {
@@ -54,7 +55,7 @@ export default function SearchForm({ query }: { query: string }) {
   const handleSelect = (city: cityInfoType) => {
     setSuggestions([]);
     setHighlightedIndex(-1);
-    // Programmatically navigate instead of updating state
+    setInputValue(city.name);
     router.push(`/?query=${encodeURIComponent(city.name)}`);
   };
 
@@ -74,7 +75,6 @@ export default function SearchForm({ query }: { query: string }) {
     } else if (e.key === "Enter") {
       if (highlightedIndex >= 0) {
         e.preventDefault();
-        // Select and navigate immediately
         handleSelect(suggestions[highlightedIndex]);
       }
     } else if (e.key === "Escape") {
@@ -93,7 +93,7 @@ export default function SearchForm({ query }: { query: string }) {
 
   return (
     <section>
-      <h2 className="text-[3.25rem] font-bold font-styled-sans py-12 lg:py-16 m-auto text-center">
+      <h2 className="text-preset-2xl py-12 lg:py-16 m-auto text-center">
         How’s the sky looking today?
       </h2>
 
@@ -103,8 +103,8 @@ export default function SearchForm({ query }: { query: string }) {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col w-full max-w-[32.875rem] relative">
-          <div className="flex items-center gap-4 bg-neutral-800 py-4 px-6 rounded-xl">
-            <Image src="/icon-search.svg" alt="search" width={20} height={20} />
+          <div className="flex items-center gap-4 bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 py-4 px-6 rounded-xl">
+            <Search size={20} />
             <input
               type="text"
               placeholder="Search for a place..."
@@ -139,7 +139,7 @@ export default function SearchForm({ query }: { query: string }) {
 
         <button
           type="submit"
-          className="bg-blue-500 py-4 text-center w-full rounded-xl sm:w-28"
+          className="bg-blue-500 py-4 text-center w-full rounded-xl sm:w-28 hover:bg-blue-700 transition-all duration-300"
         >
           Search
         </button>

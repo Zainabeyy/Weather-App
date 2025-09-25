@@ -16,8 +16,15 @@
   --color-blue-500: hsl(233, 67%, 56%);
   --color-blue-700: hsl(248, 70%, 36%);
 
+  /* ----- fonts -----  */
+
   --font-sans: var(--font-dm-sans);
   --font-styled-sans: var(--font-bricolage-grotesque);
+
+  /* ----- animation -----  */
+
+  --animate-bgPulse: bgPulse 2s infinite ease-in;
+  --animate-rise: rise 1s infinite ease-in-out;
 }
 
 @layer base {
@@ -32,7 +39,7 @@
   ::-webkit-scrollbar-thumb {
     background: #302f4a; /* thumb color */
     border-radius: 0.125rem;
-    border: 1px solid #3C3B5E;
+    border: 1px solid #3c3b5e;
   }
 
   ::-webkit-scrollbar-track {
@@ -40,9 +47,35 @@
   }
 }
 
+@keyframes bgPulse {
+  0%,
+  100% {
+    background-color: var(--color-neutral-800);
+  }
+  50% {
+    background-color: var(--color-neutral-700);
+  }
+}
+
+@keyframes rise {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  40% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
 @layer utilities {
+  .text-preset-2xl {
+    @apply text-[3.25rem] font-bold font-styled-sans;
+  }
   .text-preset-xl {
-    @apply font-medium text-xl ;
+    @apply font-medium text-xl;
   }
   .text-preset-lg {
     @apply font-medium text-lg;
@@ -55,5 +88,21 @@
   }
   .container-border {
     @apply border-[1px] border-neutral-600;
+  }
+  .buttonCont{
+    @apply bg-neutral-800 py-2.5 px-2 md:py-3 md:px-4 rounded-md md:rounded-lg;
+  }
+
+  .dots {
+    @apply inline-flex items-center gap-2 h-6;
+  }
+  .dot {
+    @apply w-3 h-3 rounded-full bg-neutral-0/80 inline-block translate-y-0 animate-rise;
+  }
+  .dot:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .dot:nth-child(3) {
+    animation-delay: 0.24s;
   }
 }

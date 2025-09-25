@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import SearchForm from "@/components/SearchForm";
 import WeatherDataComp from "@/components/WeatherComp";
 import React from "react";
 
@@ -15,8 +14,7 @@ export default async function Home({
   return (
     <div>
       <Navbar />
-      <SearchForm query={query}/>
-      <WeatherDataComp city={city[0]}/>
+      <WeatherDataComp city={city[0]} query={query}/>
     </div>
   );
 }
