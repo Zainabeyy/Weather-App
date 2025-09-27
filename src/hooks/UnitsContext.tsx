@@ -1,34 +1,55 @@
 "use client";
 
+import { UnitsContextType, UnitsState, UnitSystem } from "@/type";
 import React from "react";
 
-type Units = "imperial" | "metric";
-
-interface UnitsContextType {
-  units: Units;
-  setUnits: React.Dispatch<React.SetStateAction<Units>>;
-}
+const defaultUnits: UnitsState = {
+  temperature: "metric",
+  wind: "metric",
+  precipitation: "metric",
+  visibility: "metric",
+  pressure: "metric",
+};
 
 const UnitsContext = React.createContext<UnitsContextType>({
-  units: "metric",
+  units: defaultUnits,
   setUnits: () => {},
+  switchAll: () => {},
 });
 
 export function UnitsProvider({ children }: { children: React.ReactNode }) {
-  const [units, setUnits] = React.useState<Units>('metric');
+  const [units, setUnits] = React.useState<UnitsState>(defaultUnits);
 
-   React.useEffect(() => {
+  // Load from localStorage
+  React.useEffect(() => {
     const stored = localStorage.getItem("units");
-    if (stored === "imperial" || stored === "metric") {
-      setUnits(stored);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as UnitsState;
+        setUnits(parsed);
+      } catch {
+        setUnits(defaultUnits);
+      }
     }
   }, []);
+
+  // Save to localStorage
   React.useEffect(() => {
-    localStorage.setItem("units", units);
+    localStorage.setItem("units", JSON.stringify(units));
   }, [units]);
 
+  const switchAll = (system: UnitSystem) => {
+    setUnits({
+      temperature: system,
+      wind: system,
+      precipitation: system,
+      visibility: system,
+      pressure: system,
+    });
+  };
+
   return (
-    <UnitsContext.Provider value={{ units, setUnits }}>
+    <UnitsContext.Provider value={{ units, setUnits, switchAll }}>
       {children}
     </UnitsContext.Provider>
   );

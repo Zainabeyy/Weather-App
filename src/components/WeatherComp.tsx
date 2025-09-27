@@ -69,7 +69,7 @@ export default function WeatherComp({
   return (
     <div>
       <SearchForm query={query} />
-      {!weatherData || error === "City not found." ? (
+      {!loading && (!weatherData || error === "City not found.") ? (
         <div>
           <h2 className="text-[28px] font-bold mt-12 text-center">
             No search result found!
@@ -109,9 +109,9 @@ export default function WeatherComp({
                       >
                         <Star
                           size={24}
-                          className={
+                          className={`${
                             isSaved ? "fill-yellow-400 text-yellow-400" : ""
-                          }
+                          } hover:stroke-3 allTransition`}
                         />
                       </button>
                       <p className="font-bold text-[1.75rem]">
@@ -129,7 +129,7 @@ export default function WeatherComp({
                       unoptimized
                     />
                     <p className="font-semibold italic text-8xl">
-                      {units === "metric"
+                      {units.temperature === "metric"
                         ? `${Math.round(currentWeatherTemp)}`
                         : `${Math.round(cToF(currentWeatherTemp))}`}
                       °
@@ -138,13 +138,42 @@ export default function WeatherComp({
                 </div>
               )}
               <CurrentWeatherDetail
-                data={weatherData.hourly}
+                data={
+                  weatherData?.hourly || {
+                    apparent_temperature: [],
+                    relative_humidity_2m: [],
+                    wind_speed_10m: [],
+                    precipitation: [],
+                    uv_index: [],
+                    visibility: [],
+                    surface_pressure: []
+                  }
+                }
                 loading={loading}
               />
             </section>
-            <DailyForecast data={weatherData.daily} loading={loading} />
+            <DailyForecast
+              data={
+                weatherData?.daily || {
+                  time: [],
+                  weathercode: [],
+                  temperature_2m_max: [],
+                  temperature_2m_min: [],
+                }
+              }
+              loading={loading}
+            />
           </div>
-          <HourlyForecast data={weatherData.hourly} loading={loading} />
+          <HourlyForecast
+            data={
+              weatherData?.hourly || {
+                time: [],
+                temperature_2m: [],
+                weathercode: [],
+              }
+            }
+            loading={loading}
+          />
         </div>
       )}
     </div>

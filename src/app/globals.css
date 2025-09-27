@@ -25,6 +25,7 @@
 
   --animate-bgPulse: bgPulse 2s infinite ease-in;
   --animate-rise: rise 1s infinite ease-in-out;
+  --animate-fadeInUp: fadeInUp 0.4s ease-out;
 }
 
 @layer base {
@@ -70,6 +71,17 @@
   }
 }
 
+@keyframes fadeInUp {
+  0%: {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100%: {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @layer utilities {
   .text-preset-2xl {
     @apply text-[3.25rem] font-bold font-styled-sans;
@@ -89,8 +101,11 @@
   .container-border {
     @apply border-[1px] border-neutral-600;
   }
-  .buttonCont{
+  .buttonCont {
     @apply bg-neutral-800 py-2.5 px-2 md:py-3 md:px-4 rounded-md md:rounded-lg;
+  }
+  .allTransition{
+    @apply transition-all duration-300 ease-in;
   }
 
   .dots {

@@ -1,13 +1,25 @@
-export type unitType = {
+export type UnitSystem = "imperial" | "metric";
+
+
+export interface unitType {
   name: string;
-  type: "imperial" | "metric";
+  type: UnitSystem;
 };
 
-export type unitsType = {
-  title: string;
-  unit1: unitType;
-  unit2: unitType;
-};
+
+export interface UnitsState {
+  temperature: UnitSystem;
+  wind: UnitSystem;
+  precipitation: UnitSystem;
+  visibility:UnitSystem;
+  pressure:UnitSystem;
+}
+
+export interface UnitsContextType {
+  units: UnitsState;
+  setUnits: React.Dispatch<React.SetStateAction<UnitsState>>;
+  switchAll: (system: UnitSystem) => void;
+}
 
 export interface dailyForecastType {
   day: string;
@@ -29,6 +41,9 @@ export type weatherDataType = {
     temperature_2m : number[],
     wind_speed_10m: number[];
     precipitation: number[];
+    uv_index: number[];
+    visibility: number[];
+    surface_pressure: number[];
   };
   daily: {
     time:string[]

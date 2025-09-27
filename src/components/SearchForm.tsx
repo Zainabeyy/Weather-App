@@ -9,6 +9,7 @@ import { Search } from "lucide-react";
 export default function SearchForm({ query }: { query: string }) {
   const [inputValue, setInputValue] = useState(query || "");
   const [suggestions, setSuggestions] = useState<cityInfoType[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
@@ -103,7 +104,7 @@ export default function SearchForm({ query }: { query: string }) {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col w-full max-w-[32.875rem] relative">
-          <div className="flex items-center gap-4 bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 py-4 px-6 rounded-xl">
+          <div className="flex items-center gap-4 bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 py-4 px-6 rounded-xl focus-within:outline-1">
             <Search size={20} />
             <input
               type="text"
@@ -111,6 +112,8 @@ export default function SearchForm({ query }: { query: string }) {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setTimeout(() => setIsFocused(false), 150)}
               name="query"
               className="bg-transparent flex-1 outline-none"
               autoComplete="off"
@@ -118,7 +121,7 @@ export default function SearchForm({ query }: { query: string }) {
           </div>
 
           {/* Suggestion dropdown */}
-          {suggestions.length > 0 && (
+          {isFocused && suggestions.length > 0 && (
             <ul className="absolute top-full mt-2.5 bg-neutral-800 w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl">
               {suggestions.map((city, index) => (
                 <li

@@ -10,4 +10,8 @@ function mmToInch(mm: number) {
   return mm / 25.4;
 }
 
-export {cToF, kmhToMph, mmToInch};
+const mToKm = (m: number) => m / 1000;
+const mToMiles = (m: number) => m / 1609;
+const hPaToInHg = (hPa: number) => hPa * 0.02953;
+
+export { cToF, kmhToMph, mmToInch, mToKm, mToMiles, hPaToInHg };

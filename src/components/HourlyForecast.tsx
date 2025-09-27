@@ -1,5 +1,8 @@
+import { cToF } from "@/directives/unitConversion";
 import { getWeatherIcon } from "@/directives/weatherImages";
+import { useUnits } from "@/hooks/UnitsContext";
 import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import React from "react";
 
@@ -13,18 +16,27 @@ interface hourlyForecastProp {
 }
 
 export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
+  const { units } = useUnits();
   const [days, setShowDays] = React.useState(false);
   const [selectedDay, setSelectedDay] = React.useState("");
 
-  const today = new Date();
-  const weekdayFormatter = new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-  });
-  const dayFormatter = new Intl.DateTimeFormat("en-CA", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }); // yyyy-mm-dd
+  const today = React.useMemo(() => new Date(), []);
+  const dayFormatter = React.useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+    []
+  );
+  const weekdayFormatter = React.useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+      }),
+    []
+  );
 
   // list of next 7 days
   const weekDays = Array.from({ length: 7 }, (_, i) => {
@@ -65,11 +77,11 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
       },
       {}
     );
-  }, [data]);
+  }, [data, dayFormatter]);
 
   React.useEffect(() => {
     setSelectedDay(dayFormatter.format(today));
-  }, []);
+  }, [today, dayFormatter]);
 
   function handleSelectedDay(value: string) {
     setSelectedDay(value);
@@ -84,7 +96,7 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
         <h3 className="text-preset-xl">Hourly forecast</h3>
         <div className="relative">
           <button
-            className="bg-neutral-600 rounded-lg py-2 px-2.5 text-preset-base flex items-center gap-3"
+            className="bg-neutral-600 rounded-lg py-2 px-2.5 text-preset-base flex items-center gap-3 hover:bg-neutral-700 allTransition"
             onClick={() =>
               loading ? setShowDays(false) : setShowDays((prev) => !prev)
             }
@@ -106,15 +118,15 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
           >
             <ul className="p-2 flex flex-col gap-1">
               {weekDays.map((d) => (
-                <li
+                <button
                   key={d.value}
                   onClick={() => handleSelectedDay(d.value)}
-                  className={`text-preset-base hover:bg-neutral-700 px-2.5 py-2 rounded-lg w-full ${
+                  className={`text-preset-base hover:bg-neutral-700 px-2.5 py-2 rounded-lg w-full allTransition text-left ${
                     selectedDay === d.value ? "bg-neutral-700" : ""
                   }`}
                 >
                   {d.label}
-                </li>
+                </button>
               ))}
             </ul>
           </div>
@@ -135,26 +147,35 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
         </ul>
       ) : (
         <ul className="flex flex-col gap-4">
-          {hourlyForecast.map((item, index) => (
-            <li
-              key={index}
-              className="bg-neutral-700 rounded-lg container-border gap-2 py-2.5 px-3 flex-1 min-h-[60px]"
-            >
-              <div className="flex justify-between items-center">
-                <Image
-                  src={item.iconUrl}
-                  alt="weather icon"
-                  width={40}
-                  height={40}
-                  unoptimized
-                />
-                <p className="text-preset-xl flex-1">{item.time}</p>
-                <p className="text-preset-base">
-                  {Math.round(item.temperature)}°
-                </p>
-              </div>
-            </li>
-          ))}
+          <AnimatePresence mode="wait">
+            {hourlyForecast.map((item, index) => (
+              <motion.li
+                key={item.time + index + selectedDay}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.03 }}
+                className="bg-neutral-700 rounded-lg container-border gap-2 py-2.5 px-3 flex-1 min-h-[60px] "
+              >
+                <div className="flex justify-between items-center">
+                  <Image
+                    src={item.iconUrl}
+                    alt="weather icon"
+                    width={40}
+                    height={40}
+                    unoptimized
+                  />
+                  <p className="text-preset-xl flex-1">{item.time}</p>
+                  <p className="text-preset-base">
+                    {units.temperature === "metric"
+                      ? Math.round(item.temperature)
+                      : Math.round(cToF(item.temperature))}
+                    °
+                  </p>
+                </div>
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </ul>
       )}
     </section>

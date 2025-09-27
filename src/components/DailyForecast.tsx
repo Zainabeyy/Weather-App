@@ -1,7 +1,9 @@
 import { dailyForecastType } from "@/type";
 import { getWeatherIcon } from "@/directives/weatherImages";
+import { cToF } from "@/directives/unitConversion";
 import Image from "next/image";
 import React from "react";
+import { useUnits } from "@/hooks/UnitsContext";
 
 interface dailyForecastProp {
   data: {
@@ -14,6 +16,7 @@ interface dailyForecastProp {
 }
 
 export default function DailyForecast({ data, loading }: dailyForecastProp) {
+  const { units } = useUnits();
   // Skeleton version
   if (loading) {
     return (
@@ -63,8 +66,18 @@ export default function DailyForecast({ data, loading }: dailyForecastProp) {
                   className="mx-auto"
                 />
                 <div className="text-preset-base flex justify-between items-center flex-wrap w-full">
-                  <p>{Math.round(item.maxTemp)}°</p>
-                  <p>{Math.round(item.minTemp)}°</p>
+                  <p>
+                    {units.temperature === "metric"
+                      ? Math.round(item.maxTemp)
+                      : Math.round(cToF(item.maxTemp))}
+                    °
+                  </p>
+                  <p>
+                    {units.temperature === "metric"
+                      ? Math.round(item.minTemp)
+                      : Math.round(cToF(item.minTemp))}
+                    °
+                  </p>
                 </div>
               </div>
             </li>

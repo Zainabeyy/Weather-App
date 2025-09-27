@@ -3,9 +3,11 @@
 import { useSavedPlaces } from "@/hooks/savedPlaces";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Star, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 
 export default function SavedPlaces() {
+  const router = useRouter();
   const contRef = useRef<HTMLDivElement>(null);
   const { savedPlaces, removePlace } = useSavedPlaces();
   const [showPlaces, setShowPlaces] = React.useState(false);
@@ -14,7 +16,7 @@ export default function SavedPlaces() {
     <div className="relative">
       <button
         onClick={() => setShowPlaces((prev) => !prev)}
-        className="buttonCont flex justify-center items-center gap-2"
+        className="buttonCont flex justify-center items-center gap-2 hover:bg-neutral-700 transition-all duration-300"
       >
         <p>Favourite </p>
         <Star size={16} className="text-yellow-400 fill-yellow-400" />
@@ -28,18 +30,29 @@ export default function SavedPlaces() {
         <ul className="p-2 flex flex-col gap-2">
           {savedPlaces.length > 0 ? (
             savedPlaces.map((item, index) => (
-              <div
-                key={index}
-                className="p-2 rounded-lg flex items-center justify-between bg-neutral-700"
-              >
-                {item}
-                <button
-                  onClick={() => removePlace(item)}
-                  title="Delete place from saved"
-                  className="group"
-                >
-                  <Trash size={15} className="group-hover:text-red-700" />
-                </button>
+              <div key={index}>
+                <div className="p-1 rounded-lg flex items-center justify-between hover:bg-neutral-700 gap-2">
+                  <button
+                    onClick={() =>
+                      router.push(`/?query=${encodeURIComponent(item)}`)
+                    }
+                    className="flex-1 text-left p-1"
+                  >
+                    {item}
+                  </button>
+                  <button
+                    onClick={() => removePlace(item)}
+                    title="Delete place from saved"
+                    className="group p-1"
+                  >
+                    <Trash size={15} className="group-hover:text-red-700" />
+                  </button>
+                </div>
+                <div
+                  className={`seprator h-[1px] bg-neutral-700 my-1 ${
+                    index === savedPlaces.length - 1 ? "hidden" : "visible"
+                  }`}
+                />
               </div>
             ))
           ) : (
