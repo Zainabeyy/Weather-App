@@ -1,6 +1,6 @@
 import { cToF } from "@/directives/unitConversion";
 import { getWeatherIcon } from "@/directives/weatherImages";
-import { useUnits } from "@/hooks/UnitsContext";
+import { useUnits } from "@/providers/UnitsContext";
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
@@ -91,22 +91,24 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
   const hourlyForecast = groupedByDay[selectedDay] || [];
 
   return (
-    <section className="bg-neutral-800 rounded-[1.25rem] px-4 py-5 mt-14 xl:mt-8 max-w-[50rem] xl:flex-1 xl:max-w-[364px] w-full max-h-[693px] overflow-y-scroll">
-      <div className="flex items-center justify-between mb-4">
+    <section className="bgCont rounded-[1.25rem] px-4 py-5 mt-14 xl:mt-8 max-w-[50rem] xl:flex-1 xl:max-w-[364px] w-full max-h-[693px] overflow-y-scroll">
+      <div className="flex-between mb-4">
         <h3 className="text-preset-xl">Hourly forecast</h3>
         <div className="relative">
           <button
-            className="bg-neutral-600 rounded-lg py-2 px-2.5 text-preset-base flex items-center gap-3 hover:bg-neutral-700 allTransition"
+            className="bgContChild rounded-lg py-2 px-2.5 text-preset-base flex items-center gap-3 hover:bg-blue-300 dark:hover:bg-neutral-700 allTransition"
             onClick={() =>
               loading ? setShowDays(false) : setShowDays((prev) => !prev)
             }
           >
-            <p>{weekDays.find((d) => d.value === selectedDay)?.label}</p>
+            <p>
+              {loading
+                ? "-"
+                : weekDays.find((d) => d.value === selectedDay)?.label}
+            </p>
             <ChevronDown
               size={18}
-              className={`${
-                !days ? "rotate-180" : "rotate-0"
-              } transition-all duration-300`}
+              className={`${!days ? "rotate-180" : "rotate-0"} allTransition`}
             />
           </button>
           <div
@@ -114,19 +116,20 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
               days
                 ? "max-h-[322px] container-border opacity-100"
                 : "max-h-0 border-0 border-neutral-600 opacity-0"
-            } right-0 mt-2 bg-neutral-800 rounded-xl w-[214px] overflow-hidden transition-all duration-500`}
+            } right-0 mt-2 bgCont rounded-xl w-[214px] overflow-hidden allTransition`}
           >
             <ul className="p-2 flex flex-col gap-1">
               {weekDays.map((d) => (
-                <button
-                  key={d.value}
-                  onClick={() => handleSelectedDay(d.value)}
-                  className={`text-preset-base hover:bg-neutral-700 px-2.5 py-2 rounded-lg w-full allTransition text-left ${
-                    selectedDay === d.value ? "bg-neutral-700" : ""
-                  }`}
-                >
-                  {d.label}
-                </button>
+                <li key={d.value}>
+                  <button
+                    onClick={() => handleSelectedDay(d.value)}
+                    className={`text-preset-base hover:bg-blue-200 dark:hover:bg-neutral-700 px-2.5 py-2 rounded-lg w-full allTransition text-left ${
+                      selectedDay === d.value ? "bgContChild" : ""
+                    }`}
+                  >
+                    {d.label}
+                  </button>
+                </li>
               ))}
             </ul>
           </div>
@@ -139,9 +142,9 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
           {[...Array(8)].map((_, index) => (
             <li
               key={index}
-              className="bg-neutral-700 rounded-lg container-border gap-2 py-2.5 px-3 flex-1 min-h-[60px] animate-bgPulse"
+              className="bgContChild rounded-lg container-border gap-2 py-2.5 px-3 flex-1 min-h-[60px] animate-bgPulse"
             >
-              <div className="flex justify-between items-center"></div>
+              <div className="flex-between"></div>
             </li>
           ))}
         </ul>
@@ -155,9 +158,9 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.03 }}
-                className="bg-neutral-700 rounded-lg container-border gap-2 py-2.5 px-3 flex-1 min-h-[60px] "
+                className="bgContChild rounded-lg container-border gap-2 py-2.5 px-3 flex-1 min-h-[60px] "
               >
-                <div className="flex justify-between items-center">
+                <div className="flex-between">
                   <Image
                     src={item.iconUrl}
                     alt="weather icon"

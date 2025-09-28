@@ -7,12 +7,12 @@ import DailyForecast from "./DailyForecast";
 import HourlyForecast from "./HourlyForecast";
 import { getWeatherIcon } from "@/directives/weatherImages";
 import CurrentWeatherDetail from "./CurrentWeatherDetail";
-import { useUnits } from "@/hooks/UnitsContext";
+import { useUnits } from "@/providers/UnitsContext";
 import { cToF } from "@/directives/unitConversion";
 import SearchForm from "./SearchForm";
 import Link from "next/link";
 import { Ban, RotateCcw, Star } from "lucide-react";
-import { useSavedPlaces } from "@/hooks/savedPlaces";
+import { useSavedPlaces } from "@/providers/savedPlaces";
 
 export default function WeatherComp({
   city,
@@ -58,7 +58,7 @@ export default function WeatherComp({
         </p>
         <Link
           href={"/"}
-          className="rounded-lg bg-neutral-800 py-3 px-4 flex justify-center items-center gap-2"
+          className="rounded-lg bg-neutral-800 py-3 px-4 flex-center gap-2"
         >
           <RotateCcw size={16} />
           Retry
@@ -76,12 +76,12 @@ export default function WeatherComp({
           </h2>
         </div>
       ) : (
-        <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-8 max-w-[1216px] mx-auto">
+        <div className="flex items-center justify-center flex-col xl:flex-row xl:items-start gap-8 max-w-[1216px] mx-auto">
           {/* ---- weather card ---- */}
           <div className="flex-1">
             <section className="max-w-[50rem] mx-auto mt-8">
               {loading ? (
-                <div className="rounded-[1.25rem] w-full h-[286px] bg-[url('/Noise.svg')] bg-cover bg-neutral-900 bg-no-repeat flex flex-col justify-center items-center">
+                <div className="rounded-[1.25rem] w-full h-[286px] bg-[url('/Noise.svg')] bg-cover bg-no-repeat flex-center flex-col">
                   <div
                     className="dots"
                     aria-hidden="false"
@@ -109,26 +109,28 @@ export default function WeatherComp({
                       >
                         <Star
                           size={24}
-                          className={`${
+                          color="white"
+                          className={` ${
                             isSaved ? "fill-yellow-400 text-yellow-400" : ""
                           } hover:stroke-3 allTransition`}
                         />
                       </button>
-                      <p className="font-bold text-[1.75rem]">
+                      <p className="font-bold text-[1.75rem] text-white">
                         {cityInfo?.name}, {cityInfo?.country}
                       </p>
                     </div>
-                    <p className="text-preset-lg">{formattedDate}</p>
+                    <p className="text-preset-lg text-white">{formattedDate}</p>
                   </div>
-                  <div className="flex justify-between items-center gap-5">
+                  <div className="flex-between flex-wrap gap-5">
                     <Image
                       src={imgUrl}
                       alt="weather icon"
                       width={120}
                       height={120}
                       unoptimized
+                      fetchPriority="high"
                     />
-                    <p className="font-semibold italic text-8xl">
+                    <p className="font-semibold italic text-8xl text-white">
                       {units.temperature === "metric"
                         ? `${Math.round(currentWeatherTemp)}`
                         : `${Math.round(cToF(currentWeatherTemp))}`}
@@ -146,7 +148,7 @@ export default function WeatherComp({
                     precipitation: [],
                     uv_index: [],
                     visibility: [],
-                    surface_pressure: []
+                    surface_pressure: [],
                   }
                 }
                 loading={loading}

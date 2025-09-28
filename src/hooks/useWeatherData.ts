@@ -6,7 +6,7 @@ import {
   GeoCodingResult,
   ReverseGeocodeResult,
   weatherDataType,
-} from "@/type";
+} from "@/types/type";
 
 // ---- fetching data from api ----
 

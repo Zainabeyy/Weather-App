@@ -1,6 +1,11 @@
 import Navbar from "@/components/Navbar";
-import WeatherDataComp from "@/components/WeatherComp";
+import dynamic from "next/dynamic";
 import React from "react";
+
+
+const WeatherDataComp = dynamic(() => import("@/components/WeatherComp"), {
+  loading: () => <p>Loading weather module...</p>,
+});
 
 export default async function Home({
   searchParams,

@@ -1,6 +1,6 @@
 "use client";
 
-import { UnitsContextType, UnitsState, UnitSystem } from "@/type";
+import { UnitsContextType, UnitsState, UnitSystem } from "@/types/type";
 import React from "react";
 
 const defaultUnits: UnitsState = {

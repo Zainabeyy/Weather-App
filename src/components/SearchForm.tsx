@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { cityInfoType } from "@/type";
+import { cityInfoType } from "@/types/type";
 import { useRouter } from "next/navigation";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Search } from "lucide-react";
+import VoiceSearch from "./VoiceSearch";
 
 export default function SearchForm({ query }: { query: string }) {
   const [inputValue, setInputValue] = useState(query || "");
@@ -92,6 +93,14 @@ export default function SearchForm({ query }: { query: string }) {
     setSuggestions([]);
   };
 
+  function handleVoiceResult(query: string) {
+    setInputValue(query);
+    if (query.trim() !== "") {
+      router.push(`/?query=${encodeURIComponent(query)}`);
+    }
+    setSuggestions([]);
+  }
+
   return (
     <section>
       <h2 className="text-preset-2xl py-12 lg:py-16 m-auto text-center">
@@ -100,11 +109,11 @@ export default function SearchForm({ query }: { query: string }) {
 
       <form
         ref={formRef}
-        className="text-preset-xl gap-3 md:gap-4 flex flex-col sm:flex-row justify-center items-center relative"
+        className="text-preset-xl gap-3 md:gap-4 flex-center flex-col sm:flex-row relative"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col w-full max-w-[32.875rem] relative">
-          <div className="flex items-center gap-4 bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 py-4 px-6 rounded-xl focus-within:outline-1">
+          <div className="flex items-center gap-4 bgCont focus:bg-neutral-700 py-2.5 px-6 rounded-xl focus-within:outline-1">
             <Search size={20} />
             <input
               type="text"
@@ -115,9 +124,10 @@ export default function SearchForm({ query }: { query: string }) {
               onFocus={() => setIsFocused(true)}
               onBlur={() => setTimeout(() => setIsFocused(false), 150)}
               name="query"
-              className="bg-transparent flex-1 outline-none"
+              className="bg-transparent flex-1 outline-none min-w-0"
               autoComplete="off"
             />
+            <VoiceSearch onResult={handleVoiceResult} />
           </div>
 
           {/* Suggestion dropdown */}
@@ -142,7 +152,7 @@ export default function SearchForm({ query }: { query: string }) {
 
         <button
           type="submit"
-          className="bg-blue-500 py-4 text-center w-full rounded-xl sm:w-28 hover:bg-blue-700 transition-all duration-300"
+          className="bg-blue-400 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700 py-4 text-center w-full rounded-xl sm:w-28  allTransition text-white"
         >
           Search
         </button>

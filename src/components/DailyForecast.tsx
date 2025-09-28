@@ -1,9 +1,9 @@
-import { dailyForecastType } from "@/type";
+import { dailyForecastType } from "@/types/type";
 import { getWeatherIcon } from "@/directives/weatherImages";
 import { cToF } from "@/directives/unitConversion";
 import Image from "next/image";
 import React from "react";
-import { useUnits } from "@/hooks/UnitsContext";
+import { useUnits } from "@/providers/UnitsContext";
 
 interface dailyForecastProp {
   data: {
@@ -26,7 +26,7 @@ export default function DailyForecast({ data, loading }: dailyForecastProp) {
           {[...Array(7)].map((_, index) => (
             <li
               key={index}
-              className="px-2.5 py-4 shrink-0 flex-1 gap-2.5 bg-neutral-800 rounded-xl min-w-[90px] max-w-[104px] container-border min-h-40 animate-bgPulse"
+              className="px-2.5 py-4 shrink-0 flex-1 gap-2.5 bgCont rounded-xl min-w-[90px] max-w-[104px] container-border min-h-40 animate-bgPulse"
             ></li>
           ))}
         </ul>
@@ -53,7 +53,7 @@ export default function DailyForecast({ data, loading }: dailyForecastProp) {
           return (
             <li
               key={index}
-              className="px-2.5 py-4 shrink-0 flex-1 gap-2.5 bg-neutral-800 rounded-xl min-w-[90px] max-w-[104px] container-border min-h-40"
+              className="bgCont px-2.5 py-4 shrink-0 flex-1 gap-2.5 rounded-xl min-w-[90px] max-w-[104px] container-border min-h-40"
             >
               <div className="flex flex-col justify-center">
                 <p className="text-preset-lg text-center">{item.day}</p>
@@ -65,7 +65,7 @@ export default function DailyForecast({ data, loading }: dailyForecastProp) {
                   unoptimized
                   className="mx-auto"
                 />
-                <div className="text-preset-base flex justify-between items-center flex-wrap w-full">
+                <div className="text-preset-base flex-between flex-wrap w-full">
                   <p>
                     {units.temperature === "metric"
                       ? Math.round(item.maxTemp)

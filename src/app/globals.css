@@ -1,7 +1,8 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme inline {
-  /* ----- colors -----  */
+  /* colors  */
 
   --color-neutral-900: hsl(243, 96%, 9%);
   --color-neutral-800: hsl(243, 27%, 20%);
@@ -16,45 +17,27 @@
   --color-blue-500: hsl(233, 67%, 56%);
   --color-blue-700: hsl(248, 70%, 36%);
 
-  /* ----- fonts -----  */
+  /* fonts  */
 
   --font-sans: var(--font-dm-sans);
   --font-styled-sans: var(--font-bricolage-grotesque);
 
-  /* ----- animation -----  */
+  /* animation  */
 
   --animate-bgPulse: bgPulse 2s infinite ease-in;
   --animate-rise: rise 1s infinite ease-in-out;
   --animate-fadeInUp: fadeInUp 0.4s ease-out;
 }
 
-@layer base {
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    @apply bg-neutral-900 text-neutral-0 text-lg p-4 md:p-6 lg:px-28 lg:py-12;
-  }
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #302f4a; /* thumb color */
-    border-radius: 0.125rem;
-    border: 1px solid #3c3b5e;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent; /* track color */
-  }
-}
+/* ---- animations ---- */
 
 @keyframes bgPulse {
   0%,
   100% {
-    background-color: var(--color-neutral-800);
+    opacity: 1;
   }
   50% {
-    background-color: var(--color-neutral-700);
+    opacity: 0.5;
   }
 }
 
@@ -71,16 +54,32 @@
   }
 }
 
-@keyframes fadeInUp {
-  0%: {
-    opacity: 0;
-    transform: translateY(10px);
+/* ---- default styling ----- */
+
+@layer base {
+  *{
+    @apply transition-colors duration-300 ease-in-out;
   }
-  100%: {
-    opacity: 1;
-    transform: translateY(0);
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    @apply bg-neutral-0 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-0 text-lg p-4 md:p-6 lg:px-28 lg:py-12;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #302f4a; /* thumb color */
+    border-radius: 0.125rem;
+    border: 1px solid #3c3b5e;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent; /* track color */
   }
 }
+
+/* ---- custom classes ----- */
 
 @layer utilities {
   .text-preset-2xl {
@@ -96,16 +95,31 @@
     @apply font-medium text-base;
   }
   .seprator {
-    @apply w-full h-[1px] bg-neutral-600;
+    @apply w-full h-[1px] bg-blue-300 dark:bg-neutral-600;
   }
   .container-border {
-    @apply border-[1px] border-neutral-600;
+    @apply border-[1px] border-blue-200 dark:border-neutral-600;
   }
   .buttonCont {
     @apply bg-neutral-800 py-2.5 px-2 md:py-3 md:px-4 rounded-md md:rounded-lg;
   }
-  .allTransition{
+  .allTransition {
     @apply transition-all duration-300 ease-in;
+  }
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .bgCont {
+    @apply bg-blue-100/90 dark:bg-neutral-800;
+  }
+  .bgContChild {
+    @apply bg-blue-200 dark:bg-neutral-700;
+  }
+  .bgHover {
+    @apply hover:bg-blue-300 dark:hover:bg-neutral-700;
   }
 
   .dots {

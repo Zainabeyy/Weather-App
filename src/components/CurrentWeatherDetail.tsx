@@ -8,7 +8,7 @@ import {
   mToKm,
   hPaToInHg,
 } from "@/directives/unitConversion";
-import { useUnits } from "@/hooks/UnitsContext";
+import { useUnits } from "@/providers/UnitsContext";
 import React from "react";
 
 interface currentWeatherDetailProp {
@@ -97,11 +97,11 @@ export default function CurrentWeatherDetail({
   ];
 
   return (
-    <ul className="flex flex-wrap items-center justify-between gap-4 mt-5 sm:mt-8">
+    <ul className="flex-wrap flex-between gap-4 mt-5 sm:mt-8">
       {weatherDetail.map((item, index) => (
         <li
           key={index}
-          className={`bg-neutral-800 rounded-xl p-5 container-border flex-1 min-w-[10.25rem] shrink-0 ${
+          className={`bgCont rounded-xl p-5 container-border flex-1 min-w-[10.25rem] shrink-0 ${
             loading ? "animate-bgPulse" : ""
           }`}
         >

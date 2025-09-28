@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
-import { UnitsProvider } from "@/hooks/UnitsContext";
-import { SavedPlacesProvider } from "@/hooks/savedPlaces";
+import { UnitsProvider } from "@/providers/UnitsContext";
+import { SavedPlacesProvider } from "@/providers/savedPlaces";
+import { DarkModeProviders } from "@/providers/DarkModeProviders";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -25,13 +26,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preload */}
+        <link rel="preload" as="image" href="/bg-today-small.svg" />
+        <link rel="preload" as="image" href="/bg-today-large.svg" />
+        <link
+          rel="preconnect"
+          href="https://api.open-meteo.com"
+          crossOrigin=""
+        />
+      </head>
       <body
         className={`${dmSans.variable} ${bricolageGrotesque.variable} antialiased`}
       >
-        <UnitsProvider>
-          <SavedPlacesProvider>{children}</SavedPlacesProvider>
-        </UnitsProvider>
+        <DarkModeProviders>
+          <UnitsProvider>
+            <SavedPlacesProvider>{children}</SavedPlacesProvider>
+          </UnitsProvider>
+        </DarkModeProviders>
       </body>
     </html>
   );

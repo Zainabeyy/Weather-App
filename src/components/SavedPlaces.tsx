@@ -1,6 +1,6 @@
 "use client";
 
-import { useSavedPlaces } from "@/hooks/savedPlaces";
+import { useSavedPlaces } from "@/providers/savedPlaces";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Star, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ export default function SavedPlaces() {
     <div className="relative">
       <button
         onClick={() => setShowPlaces((prev) => !prev)}
-        className="buttonCont flex justify-center items-center gap-2 hover:bg-neutral-700 transition-all duration-300"
+        className="buttonCont bgCont bgHover flex-center gap-2 allTransition"
       >
         <p>Favourite </p>
         <Star size={16} className="text-yellow-400 fill-yellow-400" />
@@ -25,13 +25,13 @@ export default function SavedPlaces() {
         ref={contRef}
         className={`${
           showPlaces ? "max-h-[440px] opacity-100" : "max-h-0 opacity-0"
-        } absolute bg-neutral-800 w-[13.375rem] right-0 rounded-xl mt-2.5 z-[9999] overflow-hidden transition-all duration-500 shadow-2xl`}
+        } absolute bgCont w-[13.375rem] right-0 rounded-xl mt-2.5 z-[9999] overflow-hidden allTransition shadow-2xl`}
       >
         <ul className="p-2 flex flex-col gap-2">
           {savedPlaces.length > 0 ? (
             savedPlaces.map((item, index) => (
-              <div key={index}>
-                <div className="p-1 rounded-lg flex items-center justify-between hover:bg-neutral-700 gap-2">
+              <li key={index}>
+                <div className="p-1 rounded-lg flex-between bgHover gap-2 allTransition">
                   <button
                     onClick={() =>
                       router.push(`/?query=${encodeURIComponent(item)}`)
@@ -53,7 +53,7 @@ export default function SavedPlaces() {
                     index === savedPlaces.length - 1 ? "hidden" : "visible"
                   }`}
                 />
-              </div>
+              </li>
             ))
           ) : (
             <li className="p-2 rounded-lg text-sm text-neutral-200">
