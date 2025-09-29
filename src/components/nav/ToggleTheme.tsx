@@ -37,6 +37,7 @@ export default function ToggleTheme() {
   return (
     <button
       onClick={toggleTheme}
+      aria-label="toggle theme"
       className="bgCont rounded-full w-14 p-1 h-auto"
     >
       <div

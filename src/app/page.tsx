@@ -1,5 +1,4 @@
-import Navbar from "@/components/Navbar";
-import WeatherComp from "@/components/WeatherComp";
+import WeatherComp from "@/components/home/WeatherComp";
 import React from "react";
 
 
@@ -14,7 +13,6 @@ export default async function Home({
   const city=query.split(',');
   return (
     <div>
-      <Navbar />
       <WeatherComp city={city[0]} query={query}/>
     </div>
   );

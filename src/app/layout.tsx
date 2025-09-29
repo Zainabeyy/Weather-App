@@ -4,6 +4,7 @@ import "./globals.css";
 import { UnitsProvider } from "@/providers/UnitsContext";
 import { SavedPlacesProvider } from "@/providers/savedPlaces";
 import { DarkModeProviders } from "@/providers/DarkModeProviders";
+import Navbar from "@/components/nav/Navbar";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -44,7 +45,10 @@ export default function RootLayout({
       >
         <DarkModeProviders>
           <UnitsProvider>
-            <SavedPlacesProvider>{children}</SavedPlacesProvider>
+            <SavedPlacesProvider>
+              <Navbar />
+              {children}
+            </SavedPlacesProvider>
           </UnitsProvider>
         </DarkModeProviders>
       </body>

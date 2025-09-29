@@ -1,67 +1,30 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { cityInfoType } from "@/types/type";
 import { useRouter } from "next/navigation";
-import { useClickOutside } from "@/hooks/useClickOutside";
 import { Search } from "lucide-react";
-import VoiceSearch from "./VoiceSearch";
+import VoiceSearch from "../VoiceSearch";
+import { useCitySuggestions } from "@/hooks/useCitySuggestions";
 
 export default function SearchForm({ query }: { query: string }) {
   const [inputValue, setInputValue] = useState(query || "");
-  const [suggestions, setSuggestions] = useState<cityInfoType[]>([]);
   const [isFocused, setIsFocused] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
-  const formRef = useRef<HTMLFormElement>(null);
+  const {
+    suggestions,
+    highlightedIndex,
+    setHighlightedIndex,
+    clearSuggestions,
+  } = useCitySuggestions(inputValue);
   const router = useRouter();
 
-  useClickOutside(formRef, () => setSuggestions([]));
-
-  useEffect(() => {
-    if (inputValue.length < 2) {
-      setSuggestions([]);
-      setHighlightedIndex(-1);
-      return;
-    }
-
-    const controller = new AbortController();
-    const { signal } = controller;
-
-    const fetchCities = async () => {
-      try {
-        const res = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-            inputValue
-          )}&count=4&language=en&format=json`,
-          { signal }
-        );
-        const data = await res.json();
-        setSuggestions(data.results || []);
-        setHighlightedIndex(-1);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          console.log("Fetch aborted.");
-        } else {
-          console.error("Error fetching city suggestions:", err);
-        }
-      }
-    };
-
-    const debounce = setTimeout(fetchCities, 400);
-    return () => {
-      clearTimeout(debounce);
-      controller.abort();
-    };
-  }, [inputValue]);
-
   const handleSelect = (city: cityInfoType) => {
-    setSuggestions([]);
     setHighlightedIndex(-1);
     setInputValue(city.name);
     router.push(`/?query=${encodeURIComponent(city.name)}`);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>) {
     if (suggestions.length === 0) return;
 
     if (e.key === "ArrowDown") {
@@ -80,7 +43,7 @@ export default function SearchForm({ query }: { query: string }) {
         handleSelect(suggestions[highlightedIndex]);
       }
     } else if (e.key === "Escape") {
-      setSuggestions([]);
+      clearSuggestions();
       setHighlightedIndex(-1);
     }
   };
@@ -90,7 +53,7 @@ export default function SearchForm({ query }: { query: string }) {
     if (inputValue.trim() !== "") {
       router.push(`/?query=${encodeURIComponent(inputValue)}`);
     }
-    setSuggestions([]);
+    clearSuggestions();
   };
 
   function handleVoiceResult(query: string) {
@@ -98,7 +61,7 @@ export default function SearchForm({ query }: { query: string }) {
     if (query.trim() !== "") {
       router.push(`/?query=${encodeURIComponent(query)}`);
     }
-    setSuggestions([]);
+    clearSuggestions();
   }
 
   return (
@@ -108,7 +71,7 @@ export default function SearchForm({ query }: { query: string }) {
       </h2>
 
       <form
-        ref={formRef}
+        onBlur={clearSuggestions}
         className="text-preset-xl gap-3 md:gap-4 flex-center flex-col sm:flex-row relative"
         onSubmit={handleSubmit}
       >
@@ -126,6 +89,7 @@ export default function SearchForm({ query }: { query: string }) {
               name="query"
               className="bg-transparent flex-1 outline-none min-w-0"
               autoComplete="off"
+              required
             />
             <VoiceSearch onResult={handleVoiceResult} />
           </div>
@@ -139,7 +103,7 @@ export default function SearchForm({ query }: { query: string }) {
                   className={`cursor-pointer text-preset-base px-2 py-2.5 rounded-lg ${
                     index === highlightedIndex
                       ? "bgContChild"
-                      : "hover:bg-blue-200"
+                      : "hover:bg-blue-200 dark:hover:bg-neutral-600"
                   }`}
                   onClick={() => handleSelect(city)}
                 >
