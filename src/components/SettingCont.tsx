@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useUnits } from "@/providers/UnitsContext";
-import { useClickOutside } from "@/hooks/useClickOutside";
 import { Check, ChevronDown, Settings } from "lucide-react";
+import { useEscapeFocusNext } from "@/hooks/useEscapeFocusNext";
 
 export default function SettingCont() {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const contRef = React.useRef<HTMLDivElement>(null);
   const [showSetting, setShowSetting] = React.useState(false);
   const { units, setUnits, switchAll } = useUnits();
 
@@ -43,8 +43,8 @@ export default function SettingCont() {
     },
   ] as const;
 
-  // close on outside click or focus out
-  useClickOutside(containerRef, () => setShowSetting(false));
+  // tab navigation
+  useEscapeFocusNext(contRef, () => setShowSetting(false));
 
   const globalSystem =
     units.temperature === "imperial" &&
@@ -62,7 +62,25 @@ export default function SettingCont() {
   };
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div
+      className="relative"
+      ref={contRef}
+      onFocus={(e) => {
+        const target = e.target as HTMLElement;
+        const triggerButton = contRef.current?.querySelector("button");
+        if (contRef.current && target !== triggerButton) {
+          setShowSetting(true);
+        }
+      }}
+      onBlur={(e) => {
+        if (
+          contRef.current &&
+          !contRef.current.contains(e.relatedTarget as Node)
+        ) {
+          setShowSetting(false);
+        }
+      }}
+    >
       {/* ---- trigger button ---- */}
       <button
         type="button"

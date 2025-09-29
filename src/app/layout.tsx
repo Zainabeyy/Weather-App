@@ -28,6 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#ffffff" />
         {/* Preload */}
         <link rel="preload" as="image" href="/bg-today-small.svg" />
         <link rel="preload" as="image" href="/bg-today-large.svg" />

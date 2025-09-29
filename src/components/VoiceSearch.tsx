@@ -57,6 +57,7 @@ export default function VoiceSearch({ onResult }: VoiceSearchProps) {
 
   return (
     <button
+      type="button"
       onClick={startListening}
       className={`p-2.5 rounded-full shadow-md transition text-neutral-0 ${
         listening

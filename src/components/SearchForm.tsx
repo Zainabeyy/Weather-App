@@ -132,14 +132,14 @@ export default function SearchForm({ query }: { query: string }) {
 
           {/* Suggestion dropdown */}
           {isFocused && suggestions.length > 0 && (
-            <ul className="absolute top-full mt-2.5 bg-neutral-800 w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl">
+            <ul className="absolute top-full mt-2.5 bgCont w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl">
               {suggestions.map((city, index) => (
                 <li
                   key={city.id}
                   className={`cursor-pointer text-preset-base px-2 py-2.5 rounded-lg ${
                     index === highlightedIndex
-                      ? "bg-neutral-700"
-                      : "hover:bg-neutral-700"
+                      ? "bgContChild"
+                      : "hover:bg-blue-200"
                   }`}
                   onClick={() => handleSelect(city)}
                 >

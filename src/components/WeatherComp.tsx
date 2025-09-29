@@ -13,6 +13,7 @@ import SearchForm from "./SearchForm";
 import Link from "next/link";
 import { Ban, RotateCcw, Star } from "lucide-react";
 import { useSavedPlaces } from "@/providers/savedPlaces";
+import SunTime from "./SunTime";
 
 export default function WeatherComp({
   city,
@@ -67,7 +68,7 @@ export default function WeatherComp({
     );
 
   return (
-    <div>
+    <div className="max-w-[1216px] mx-auto">
       <SearchForm query={query} />
       {!loading && (!weatherData || error === "City not found.") ? (
         <div>
@@ -76,7 +77,7 @@ export default function WeatherComp({
           </h2>
         </div>
       ) : (
-        <div className="flex items-center justify-center flex-col xl:flex-row xl:items-start gap-8 max-w-[1216px] mx-auto">
+        <div className="flex items-center justify-center flex-col xl:flex-row xl:items-start gap-8">
           {/* ---- weather card ---- */}
           <div className="flex-1">
             <section className="max-w-[50rem] mx-auto mt-8">
@@ -164,6 +165,10 @@ export default function WeatherComp({
                 }
               }
               loading={loading}
+            />
+            <SunTime
+              sunrise={weatherData?.daily.sunrise[0] || ""}
+              sunset={weatherData?.daily.sunset[0] || ""}
             />
           </div>
           <HourlyForecast

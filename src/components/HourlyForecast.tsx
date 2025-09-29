@@ -1,10 +1,11 @@
 import { cToF } from "@/directives/unitConversion";
 import { getWeatherIcon } from "@/directives/weatherImages";
+import { useEscapeFocusNext } from "@/hooks/useEscapeFocusNext";
 import { useUnits } from "@/providers/UnitsContext";
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 
 interface hourlyForecastProp {
   data: {
@@ -17,6 +18,7 @@ interface hourlyForecastProp {
 
 export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
   const { units } = useUnits();
+  const contRef = useRef<HTMLDivElement | null>(null);
   const [days, setShowDays] = React.useState(false);
   const [selectedDay, setSelectedDay] = React.useState("");
 
@@ -90,11 +92,31 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
 
   const hourlyForecast = groupedByDay[selectedDay] || [];
 
+  useEscapeFocusNext(contRef, () => setShowDays(false));
+
   return (
     <section className="bgCont rounded-[1.25rem] px-4 py-5 mt-14 xl:mt-8 max-w-[50rem] xl:flex-1 xl:max-w-[364px] w-full max-h-[693px] overflow-y-scroll">
       <div className="flex-between mb-4">
         <h3 className="text-preset-xl">Hourly forecast</h3>
-        <div className="relative">
+        <div
+          ref={contRef}
+          className="relative"
+          onFocus={(e) => {
+            const target = e.target as HTMLElement;
+            const triggerButton = contRef.current?.querySelector("button");
+            if (contRef.current && target !== triggerButton) {
+              setShowDays(true);
+            }
+          }}
+          onBlur={(e) => {
+            if (
+              contRef.current &&
+              !contRef.current.contains(e.relatedTarget as Node)
+            ) {
+              setShowDays(false);
+            }
+          }}
+        >
           <button
             className="bgContChild rounded-lg py-2 px-2.5 text-preset-base flex items-center gap-3 hover:bg-blue-300 dark:hover:bg-neutral-700 allTransition"
             onClick={() =>

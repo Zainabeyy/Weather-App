@@ -1,19 +1,38 @@
 "use client";
 
 import { useSavedPlaces } from "@/providers/savedPlaces";
-import { useClickOutside } from "@/hooks/useClickOutside";
 import { Star, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
+import { useEscapeFocusNext } from "@/hooks/useEscapeFocusNext";
 
 export default function SavedPlaces() {
   const router = useRouter();
   const contRef = useRef<HTMLDivElement>(null);
   const { savedPlaces, removePlace } = useSavedPlaces();
   const [showPlaces, setShowPlaces] = React.useState(false);
-  useClickOutside(contRef, () => setShowPlaces(false));
+  // tab navigation
+  useEscapeFocusNext(contRef, () => setShowPlaces(false));
   return (
-    <div className="relative">
+    <div
+      ref={contRef}
+      onFocus={(e) => {
+        const target = e.target as HTMLElement;
+        const triggerButton = contRef.current?.querySelector("button");
+        if (contRef.current && target !== triggerButton) {
+          setShowPlaces(true);
+        }
+      }}
+      onBlur={(e) => {
+        if (
+          contRef.current &&
+          !contRef.current.contains(e.relatedTarget as Node)
+        ) {
+          setShowPlaces(false);
+        }
+      }}
+      className="relative"
+    >
       <button
         onClick={() => setShowPlaces((prev) => !prev)}
         className="buttonCont bgCont bgHover flex-center gap-2 allTransition"
@@ -22,7 +41,6 @@ export default function SavedPlaces() {
         <Star size={16} className="text-yellow-400 fill-yellow-400" />
       </button>
       <div
-        ref={contRef}
         className={`${
           showPlaces ? "max-h-[440px] opacity-100" : "max-h-0 opacity-0"
         } absolute bgCont w-[13.375rem] right-0 rounded-xl mt-2.5 z-[9999] overflow-hidden allTransition shadow-2xl`}
@@ -56,7 +74,7 @@ export default function SavedPlaces() {
               </li>
             ))
           ) : (
-            <li className="p-2 rounded-lg text-sm text-neutral-200">
+            <li className="p-2 rounded-lg text-sm text-neutral-600 dark:text-neutral-200">
               There is no saved place.
             </li>
           )}
