@@ -53,7 +53,7 @@ export default function WeatherComp({
       <div className="mx-auto w-fit text-center flex flex-col gap-6 items-center mt-16">
         <Ban size={50} />
         <h2 className="text-preset-2xl">Something went wrong</h2>
-        <p className="text-preset-xl max-w-[50ch] text-neutral-200">
+        <p className="text-preset-xl max-w-[50ch] text-neutral-800 dark:text-neutral-200">
           We couldn’t connect to the server (API error). Please try again in a
           few moments.
         </p>
@@ -80,7 +80,7 @@ export default function WeatherComp({
         <div className="flex items-center justify-center flex-col xl:flex-row xl:items-start gap-8">
           {/* ---- weather card ---- */}
           <div className="flex-1">
-            <section className="max-w-[50rem] mx-auto mt-8">
+            <section className="max-w-4xl mx-auto mt-8">
               {loading ? (
                 <div className="rounded-[1.25rem] w-full h-[286px] bg-[url('/Noise.svg')] bg-cover bg-no-repeat flex-center flex-col">
                   <div

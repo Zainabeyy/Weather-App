@@ -95,7 +95,7 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
   useEscapeFocusNext(contRef, () => setShowDays(false));
 
   return (
-    <section className="bgCont rounded-[1.25rem] px-4 py-5 mt-14 xl:mt-8 max-w-[50rem] xl:flex-1 xl:max-w-[364px] w-full max-h-[693px] overflow-y-scroll">
+    <section className="bgCont rounded-[1.25rem] px-4 py-5 mt-14 xl:mt-8 max-w-4xl xl:flex-1 xl:max-w-[364px] w-full max-h-[693px] overflow-y-scroll">
       <div className="flex-between mb-4">
         <h3 className="text-preset-xl">Hourly forecast</h3>
         <div
@@ -172,7 +172,7 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
         </ul>
       ) : (
         <ul className="flex flex-col gap-4">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {hourlyForecast.map((item, index) => (
               <motion.li
                 key={item.time + index + selectedDay}

@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
 import { useCitySuggestions } from "@/hooks/useCitySuggestions";
 import { cityInfoType } from "@/types/type";
-import Form from "next/form";
 import React from "react";
-import VoiceSearch from "./VoiceSearch";
+import VoiceSearch from "../VoiceSearch";
 
 export default function ComparisonSearch() {
   const [cityNames, setCityNames] = React.useState({
@@ -31,7 +30,7 @@ export default function ComparisonSearch() {
     else city2Suggestions.clearSuggestions();
   }
   return (
-    <Form
+    <form
       action={"/compare-locations"}
       className="text-preset-xl gap-3 md:gap-4 flex-center flex-col max-w-[40rem] w-full mx-auto mt-14"
     >
@@ -115,6 +114,6 @@ export default function ComparisonSearch() {
       >
         Search
       </button>
-    </Form>
+    </form>
   );
 }

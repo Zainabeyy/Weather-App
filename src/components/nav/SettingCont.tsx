@@ -63,7 +63,7 @@ export default function SettingCont() {
 
   return (
     <div
-      className="relative"
+      className="relative w-fit"
       ref={contRef}
       onFocus={(e) => {
         const target = e.target as HTMLElement;
@@ -108,7 +108,7 @@ export default function SettingCont() {
         aria-label="Units settings"
         className={`${
           showSetting ? "opacity-100" : "max-h-0 opacity-0"
-        } absolute bgCont w-[13.375rem] right-0 rounded-xl mt-2.5 z-[9999] overflow-hidden shadow-2xl allTransition`}
+        } absolute bgCont w-[13.375rem] left-0 md:left-auto md:right-0 rounded-xl mt-2.5 z-[9999] overflow-hidden shadow-2xl allTransition`}
       >
         <div className="py-1.5 px-2">
           {/* ---- Switch all ---- */}

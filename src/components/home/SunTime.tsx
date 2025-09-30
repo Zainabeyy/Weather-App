@@ -27,7 +27,7 @@ export default function SunTime({ sunrise, sunset }: sunTimeProp) {
     },
   ];
   return (
-    <div className="bgCont mt-8 md:mt-12 max-w-[50rem] rounded-2xl p-6 xl:pr-10 ">
+    <div className="bgCont mt-8 md:mt-12 max-w-4xl rounded-2xl p-6 xl:pr-10 ">
       <h3 className="capitalize text-preset-xl pb-5">Sun Times</h3>
       <div className="flex flex-wrap justify-between items-center gap-y-5">
         {times.map((item) => (

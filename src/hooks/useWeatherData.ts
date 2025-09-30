@@ -119,7 +119,15 @@ export default function useWeatherData(cityName?: string) {
         if (err instanceof DOMException && err.name === "AbortError") {
           // Ignore abort errors
         } else if (err instanceof GeolocationPositionError && err.code === 1) {
-          setError("Location access denied. Please search by city.");
+          const fallbackCity = "London";
+          const geoData = await fetchGeoData(fallbackCity, signal);
+          setCityInfo({ name: geoData.name, country: geoData.country });
+          const weather = await fetchWeather(
+            geoData.latitude,
+            geoData.longitude,
+            signal
+          );
+          setWeatherData(weather);
         } else {
           setError(
             err instanceof Error ? err.message : "An unexpected error occurred."

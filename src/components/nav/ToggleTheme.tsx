@@ -38,10 +38,10 @@ export default function ToggleTheme() {
     <button
       onClick={toggleTheme}
       aria-label="toggle theme"
-      className="bgCont rounded-full w-14 p-1 h-auto"
+      className="bgCont rounded-full w-16 p-1 h-8 "
     >
       <div
-        className={`size-5 bgContChild rounded-full allTransition ${
+        className={`w-fit p-0.5 flex-center bgContChild rounded-full allTransition ${
           isDark ? "translate-x-0" : "translate-x-[140%]"
         }`}
       >

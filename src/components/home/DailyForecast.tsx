@@ -20,7 +20,7 @@ export default function DailyForecast({ data, loading }: dailyForecastProp) {
   // Skeleton version
   if (loading) {
     return (
-      <section className="mt-8 md:mt-12 mx-auto max-w-[50rem]">
+      <section className="mt-8 md:mt-12 mx-auto max-w-4xl">
         <h3 className="capitalize text-preset-xl pb-5">daily forecast</h3>
         <ul className="flex flex-wrap gap-4">
           {[...Array(7)].map((_, index) => (
@@ -45,7 +45,7 @@ export default function DailyForecast({ data, loading }: dailyForecastProp) {
   });
 
   return (
-    <section className="mt-8 md:mt-12 mx-auto max-w-[50rem]">
+    <section className="mt-8 md:mt-12 mx-auto max-w-4xl">
       <h3 className="capitalize text-preset-xl pb-5">daily forecast</h3>
       <ul className="flex flex-wrap gap-4">
         {dailyForecast.map((item, index) => {

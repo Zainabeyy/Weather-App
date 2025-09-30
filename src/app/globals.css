@@ -29,6 +29,7 @@
   --animate-fadeInUp: fadeInUp 0.4s ease-out;
 }
 
+
 /* ---- animations ---- */
 
 @keyframes bgPulse {
@@ -58,11 +59,17 @@
 
 @layer base {
   *{
-    @apply transition-colors duration-300 ease-in-out;
+    @apply transition-colors duration-300 ease-in-out max-w-screen overflow-x-hidden;
   }
   body {
     font-family: Arial, Helvetica, sans-serif;
     @apply bg-neutral-0 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-0 text-lg p-4 md:p-6 lg:px-28 lg:py-12;
+  }
+  th,td{
+    @apply bg-blue-200 dark:bg-neutral-700 rounded-xl p-3 px-2 sm:px-4  capitalize text-sm sm:text-lg;
+  }
+  th{
+    @apply font-medium text-base sm:text-xl;
   }
   ::-webkit-scrollbar {
     width: 4px;
@@ -101,7 +108,7 @@
     @apply border-[1px] border-blue-200 dark:border-neutral-600;
   }
   .buttonCont {
-    @apply bg-neutral-800 py-2.5 px-2 md:py-3 md:px-4 rounded-md md:rounded-lg;
+    @apply bg-blue-200 dark:bg-neutral-700 py-2.5 px-2 md:py-3 md:px-4 rounded-md md:rounded-lg;
   }
   .allTransition {
     @apply transition-all duration-300 ease-in;
