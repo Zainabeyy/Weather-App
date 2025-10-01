@@ -48,6 +48,8 @@ export default function WeatherComp({
     }
   }
 
+  // error component 
+
   if (error && error !== "City not found.")
     return (
       <div className="mx-auto w-fit text-center flex flex-col gap-6 items-center mt-16">
@@ -67,9 +69,16 @@ export default function WeatherComp({
       </div>
     );
 
+
+    // main component 
+
   return (
     <div className="max-w-[1216px] mx-auto">
       <SearchForm query={query} />
+
+      {/* weather result  */}
+
+      
       {!loading && (!weatherData || error === "City not found.") ? (
         <div>
           <h2 className="text-[28px] font-bold mt-12 text-center">
@@ -97,7 +106,7 @@ export default function WeatherComp({
                   </h2>
                 </div>
               ) : (
-                <div className="bg-[url('/bg-today-small.svg')] sm:bg-[url('/bg-today-large.svg')] bg-center bg-cover bg-no-repeat w-full rounded-[1.25rem] py-10 px-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-between sm:py-20">
+                <div className="bg-[url('/bg-today-small.svg')] sm:bg-[url('/bg-today-large.svg')] bg-center bg-cover bg-no-repeat w-full rounded-[1.25rem] py-10 px-6 flex flex-col items-center gap-y-4 sm:flex-row sm:justify-between sm:py-20">
                   <div>
                     <div className="flex items-center gap-3 mb-3">
                       <button
@@ -122,7 +131,7 @@ export default function WeatherComp({
                     </div>
                     <p className="text-preset-lg text-white">{formattedDate}</p>
                   </div>
-                  <div className="flex-between flex-wrap gap-5">
+                  <div className="flex-between gap-5">
                     <Image
                       src={imgUrl}
                       alt="weather icon"
@@ -131,7 +140,7 @@ export default function WeatherComp({
                       unoptimized
                       fetchPriority="high"
                     />
-                    <p className="font-semibold italic text-8xl text-white">
+                    <p className="font-semibold italic text-8xl text-white shrink-0 h-full overflow-hidden w-auto flex-1">
                       {units.temperature === "metric"
                         ? `${Math.round(currentWeatherTemp)}`
                         : `${Math.round(cToF(currentWeatherTemp))}`}

@@ -19,6 +19,25 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
+  // Inside your Navbar component:
+
+  React.useEffect(() => {
+    // Only apply on small screens where the nav is a full-screen overlay (i.e., when showNav is true)
+    const isMobile = window.innerWidth < 768; // Tailwind's 'md' breakpoint
+
+    if (showNav && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore default scrolling when nav is closed or on desktop
+      document.body.style.overflow = "";
+    }
+
+    // Cleanup function to ensure overflow is restored when component unmounts
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showNav]); // Rerun this effect whenever showNav changes
+
   React.useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -49,15 +68,15 @@ export default function Navbar() {
           className="w-[8.625rem] md:w-[12.25rem]"
         />
       </Link>
-      <div className="flex items-start sm:items-center gap-2 sm:gap-5 text-preset-base">
+      <div className="flex content-start flex-wrap sm:items-center gap-2 sm:gap-5 text-preset-base">
         <Link
           href="/compare-locations"
-          className="buttonCont bgHover w-auto"
+          className="buttonCont bgHover w-auto mr-6 md:mr-0 text-sm sm:text-base whitespace-nowrap"
         >
           Compare Locations
         </Link>
         <div
-          className={`md:flex-center flex items-start md:flex-row md:static absolute h-full w-full z-[999] top-0 md:w-auto md:h-auto right-0 allTransition ${
+          className={`md:flex-center flex items-start md:flex-row absolute md:static  left-0 h-full w-full z-[999] top-0 md:w-auto md:h-auto right-0 allTransition ${
             showNav ? "translate-x-0" : "translate-x-[93%]"
           }`}
         >
@@ -67,7 +86,7 @@ export default function Navbar() {
           >
             <ChevronLeft />
           </button>
-          <div className="bg-black/70 w-[95%] md:w-auto p-3 md:p-0 h-full md:h-auto gap-4 flex flex-wrap sm:flex-row md:bg-transparent">
+          <div className="bg-black/70 min-h-full w-[95%] md:h-auto md:w-auto p-3 md:p-0 gap-4 flex flex-col sm:flex-row md:bg-transparent">
             <SettingCont />
             <SavedPlaces />
             <ToggleTheme />

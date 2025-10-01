@@ -43,7 +43,7 @@ export default function SavedPlaces() {
       </button>
       {showPlaces && (
         <ul className="p-2 flex flex-col gap-2 absolute bgCont w-[13.375rem] left-0 md:left-auto md:right-0 rounded-xl mt-2.5 z-[9999] overflow-hidden shadow-2xl">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {savedPlaces.length > 0 ? (
               savedPlaces.map((item, index) => (
                 <motion.li

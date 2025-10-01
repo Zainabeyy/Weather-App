@@ -3,13 +3,23 @@
 import { useCitySuggestions } from "@/hooks/useCitySuggestions";
 import { cityInfoType } from "@/types/type";
 import React from "react";
+import Image from "next/image";
 import VoiceSearch from "../VoiceSearch";
 
-export default function ComparisonSearch() {
+export default function ComparisonSearch({
+  city1,
+  city2,
+}: {
+  city1: string;
+  city2: string;
+}) {
   const [cityNames, setCityNames] = React.useState({
-    City1: "",
-    City2: "",
+    City1: city1 || "",
+    City2: city2 || "",
   });
+  const [focusedInput, setFocusedInput] = React.useState<
+    "City1" | "City2" | null
+  >(null);
 
   // Hooks for each input
   const city1Suggestions = useCitySuggestions(cityNames.City1);
@@ -25,10 +35,14 @@ export default function ComparisonSearch() {
   }
 
   function handleSelect(cityKey: "City1" | "City2", city: cityInfoType) {
-    setCityNames((prev) => ({ ...prev, [cityKey]: city.name }));
+    const value = `${city.name}, ${city.country}`;
+    setCityNames((prev) => ({ ...prev, [cityKey]: value }));
     if (cityKey === "City1") city1Suggestions.clearSuggestions();
     else city2Suggestions.clearSuggestions();
   }
+
+  // ----main component -----
+
   return (
     <form
       action={"/compare-locations"}
@@ -67,7 +81,7 @@ export default function ComparisonSearch() {
         }
 
         return (
-          <div key={item} className="relative w-full">
+          <div key={item} onBlur={clearSuggestions} className="relative w-full">
             <div className="flex-between w-full gap-4 bgCont focus:bg-neutral-700 py-2.5 px-6 rounded-xl focus-within:outline-1">
               <input
                 type="text"
@@ -75,8 +89,14 @@ export default function ComparisonSearch() {
                 placeholder={`Enter ${item === "City1" ? "1st" : "2nd"} city`}
                 value={cityNames[item]}
                 onChange={handleChange}
-                onFocus={() => setHighlightedIndex(-1)}
-                onBlur={clearSuggestions}
+                onFocus={() => {
+                  setFocusedInput(item);
+                  setHighlightedIndex(-1);
+                }}
+                onBlur={() => {
+                  clearSuggestions();
+                  setFocusedInput(null);
+                }}
                 onKeyDown={handleKeyDown}
                 required
                 className="bg-transparent flex-1 outline-none min-w-0"
@@ -87,19 +107,35 @@ export default function ComparisonSearch() {
               />
             </div>
 
-            {suggestions.length > 0 && (
-              <ul className="absolute top-full mt-2.5 bgCont w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl">
+            {focusedInput === item && suggestions.length > 0 && (
+              <ul
+                className="absolute top-full mt-2.5 bgCont w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl"
+                onMouseDown={(e) => e.preventDefault()}
+              >
                 {suggestions.map((city, index) => (
                   <li
                     key={city.id}
-                    className={`cursor-pointer text-preset-base px-2 py-2.5 rounded-lg ${
+                    className={`cursor-pointer text-preset-base px-2 py-2.5 rounded-lg flex items-center gap-2 ${
                       index === highlightedIndex
                         ? "bgContChild"
                         : "hover:bg-blue-200 dark:hover:bg-neutral-700"
                     }`}
                     onClick={() => handleSelect(item, city)}
                   >
-                    {city.name}, {city.country}
+                    <Image
+                      src={`https://flagsapi.com/${city.country_code}/flat/32.png`}
+                      alt={city.country}
+                      width={20}
+                      height={20}
+                      className="w-5 h-5 object-cover rounded-full"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display =
+                          "none";
+                      }}
+                    />
+                    <span>
+                      {city.name}, {city.country}
+                    </span>
                   </li>
                 ))}
               </ul>

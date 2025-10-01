@@ -1,18 +1,16 @@
 export type UnitSystem = "imperial" | "metric";
 
-
 export interface unitType {
   name: string;
   type: UnitSystem;
-};
-
+}
 
 export interface UnitsState {
   temperature: UnitSystem;
   wind: UnitSystem;
   precipitation: UnitSystem;
-  visibility:UnitSystem;
-  pressure:UnitSystem;
+  visibility: UnitSystem;
+  pressure: UnitSystem;
 }
 
 export interface UnitsContextType {
@@ -31,14 +29,14 @@ export interface dailyForecastType {
 export type weatherDataType = {
   current_weather: {
     temperature: number;
-    weathercode:number;
+    weathercode: number;
   };
   hourly: {
-    time:string[];
+    time: string[];
     apparent_temperature: number[];
     relative_humidity_2m: number[];
-    weathercode:number[];
-    temperature_2m : number[],
+    weathercode: number[];
+    temperature_2m: number[];
     wind_speed_10m: number[];
     precipitation: number[];
     uv_index: number[];
@@ -46,12 +44,12 @@ export type weatherDataType = {
     surface_pressure: number[];
   };
   daily: {
-    time:string[]
+    time: string[];
     weathercode: number[];
     temperature_2m_max: number[];
     temperature_2m_min: number[];
-    sunrise:string[];
-    sunset:string[];
+    sunrise: string[];
+    sunset: string[];
   };
 };
 
@@ -59,6 +57,7 @@ export type cityInfoType = {
   id?: number;
   name: string;
   country: string;
+  country_code: string;
 };
 
 export interface GeoCodingResult {
@@ -66,10 +65,12 @@ export interface GeoCodingResult {
   longitude: number;
   name: string;
   country: string;
+  country_code: string;
 }
 
 export interface ReverseGeocodeResult {
   city: string;
   locality: string;
   countryName: string;
+  countryCode:string;
 }

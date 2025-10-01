@@ -78,7 +78,7 @@ export default function useWeatherData(cityName?: string) {
         // Fetch by city name
         if (cityName) {
           const geoData = await fetchGeoData(cityName, signal);
-          setCityInfo({ name: geoData.name, country: geoData.country });
+          setCityInfo({ name: geoData.name, country: geoData.country, country_code: geoData.country_code });
           const weather = await fetchWeather(
             geoData.latitude,
             geoData.longitude,
@@ -105,6 +105,7 @@ export default function useWeatherData(cityName?: string) {
           setCityInfo({
             name: locationData.city || locationData.locality || "Unknown",
             country: locationData.countryName,
+            country_code:locationData.countryCode
           });
           const weather = await fetchWeather(
             position.coords.latitude,
@@ -121,7 +122,7 @@ export default function useWeatherData(cityName?: string) {
         } else if (err instanceof GeolocationPositionError && err.code === 1) {
           const fallbackCity = "London";
           const geoData = await fetchGeoData(fallbackCity, signal);
-          setCityInfo({ name: geoData.name, country: geoData.country });
+          setCityInfo({ name: geoData.name, country: geoData.country, country_code: geoData.country_code });
           const weather = await fetchWeather(
             geoData.latitude,
             geoData.longitude,

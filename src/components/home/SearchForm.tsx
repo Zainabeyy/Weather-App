@@ -6,8 +6,11 @@ import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import VoiceSearch from "../VoiceSearch";
 import { useCitySuggestions } from "@/hooks/useCitySuggestions";
+import Image from "next/image";
+
 
 export default function SearchForm({ query }: { query: string }) {
+  const router = useRouter();
   const [inputValue, setInputValue] = useState(query || "");
   const [isFocused, setIsFocused] = useState(false);
   const {
@@ -16,7 +19,6 @@ export default function SearchForm({ query }: { query: string }) {
     setHighlightedIndex,
     clearSuggestions,
   } = useCitySuggestions(inputValue);
-  const router = useRouter();
 
   const handleSelect = (city: cityInfoType) => {
     setHighlightedIndex(-1);
@@ -24,7 +26,7 @@ export default function SearchForm({ query }: { query: string }) {
     router.push(`/?query=${encodeURIComponent(city.name)}`);
   };
 
-  function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (suggestions.length === 0) return;
 
     if (e.key === "ArrowDown") {
@@ -46,7 +48,7 @@ export default function SearchForm({ query }: { query: string }) {
       clearSuggestions();
       setHighlightedIndex(-1);
     }
-  };
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,7 +74,7 @@ export default function SearchForm({ query }: { query: string }) {
 
       <form
         onBlur={clearSuggestions}
-        className="text-preset-xl gap-3 md:gap-4 flex-center flex-col sm:flex-row relative"
+        className="text-preset-xl gap-3 md:gap-4 flex-center flex-col sm:flex-row"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col w-full max-w-[32.875rem] relative">
@@ -96,18 +98,34 @@ export default function SearchForm({ query }: { query: string }) {
 
           {/* Suggestion dropdown */}
           {isFocused && suggestions.length > 0 && (
-            <ul className="absolute top-full mt-2.5 bgCont w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl">
+            <ul
+              className="absolute top-full mt-2.5 bgCont w-full shadow-lg z-10 max-h-60 overflow-y-auto p-2 rounded-xl"
+              onMouseDown={(e) => e.preventDefault()}
+            >
               {suggestions.map((city, index) => (
                 <li
                   key={city.id}
-                  className={`cursor-pointer text-preset-base px-2 py-2.5 rounded-lg ${
+                  className={`cursor-pointer text-preset-base px-2 py-2.5 rounded-lg flex items-center gap-2 ${
                     index === highlightedIndex
                       ? "bgContChild"
                       : "hover:bg-blue-200 dark:hover:bg-neutral-600"
                   }`}
                   onClick={() => handleSelect(city)}
                 >
-                  {city.name}, {city.country}
+                  <Image
+                    src={`https://flagsapi.com/${city.country_code}/flat/32.png`}
+                    alt={city.country}
+                    width={20}
+                    height={20}
+                    className="w-5 h-5 object-cover rounded-full"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display =
+                        "none";
+                    }}
+                  />
+                  <span>
+                    {city.name}, {city.country}
+                  </span>
                 </li>
               ))}
             </ul>

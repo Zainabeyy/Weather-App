@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import React from "react";
 
 export default function ToggleTheme() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {

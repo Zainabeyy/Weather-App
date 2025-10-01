@@ -13,10 +13,17 @@ import { useUnits } from "@/providers/UnitsContext";
 import { weatherDataType } from "@/types/type";
 import { Ban } from "lucide-react";
 import React from "react";
+import Image from "next/image";
 import ComparisonTempChart from "./ComparisonTempChart";
 import ComparisonSearch from "./ComparisonSearch";
 
-export default function ComparisonComp({city1,city2}:{city1:string,city2:string}) {
+export default function ComparisonComp({
+  city1,
+  city2,
+}: {
+  city1: string;
+  city2: string;
+}) {
   const { units } = useUnits();
 
   const {
@@ -24,14 +31,14 @@ export default function ComparisonComp({city1,city2}:{city1:string,city2:string}
     cityInfo: cityInfo1,
     loading: loading1,
     error: error1,
-  } = useWeatherData(city1 || '');
-
+  } = useWeatherData(city1 || "");
+  console.log(cityInfo1);
   const {
     weatherData: weather2,
     cityInfo: cityInfo2,
     loading: loading2,
     error: error2,
-  } = useWeatherData(city2 || '');
+  } = useWeatherData(city2 || "");
 
   // 🔹 Helper function to generate weather details for a city
   const buildWeatherDetails = (weather: weatherDataType | null) => {
@@ -102,8 +109,7 @@ export default function ComparisonComp({city1,city2}:{city1:string,city2:string}
 
   return (
     <div>
-
-      <ComparisonSearch />
+      <ComparisonSearch city1={city1} city2={city2} />
 
       <table
         className={`${
@@ -113,12 +119,30 @@ export default function ComparisonComp({city1,city2}:{city1:string,city2:string}
         <thead>
           <tr>
             <th>Metric</th>
-            <th>
-              {!loading1 ? `${cityInfo1?.name}, ${cityInfo1?.country}` : "_"}
-            </th>
-            <th>
-              {!loading2 ? `${cityInfo2?.name}, ${cityInfo2?.country}` : "_"}
-            </th>
+            {[cityInfo1, cityInfo2].map((item, index) => (
+              <th key={index}>
+                {!loading1 ? (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={`https://flagsapi.com/${item?.country_code}/flat/32.png`}
+                      alt={item?.country || "flag"}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 object-cover rounded-full"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display =
+                          "none";
+                      }}
+                    />
+                    <p>
+                      {item?.name}, {item?.country}
+                    </p>
+                  </div>
+                ) : (
+                  "_"
+                )}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -168,4 +192,4 @@ export default function ComparisonComp({city1,city2}:{city1:string,city2:string}
       )}
     </div>
   );
-} 
+}
