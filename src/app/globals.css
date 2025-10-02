@@ -72,7 +72,7 @@
     @apply font-medium text-base sm:text-xl;
   }
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 0.3rem;
   }
 
   ::-webkit-scrollbar-thumb {

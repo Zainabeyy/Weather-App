@@ -48,7 +48,7 @@ export default function WeatherComp({
     }
   }
 
-  // error component 
+  // error component
 
   if (error && error !== "City not found.")
     return (
@@ -69,8 +69,7 @@ export default function WeatherComp({
       </div>
     );
 
-
-    // main component 
+  // main component
 
   return (
     <div className="max-w-[1216px] mx-auto">
@@ -78,7 +77,6 @@ export default function WeatherComp({
 
       {/* weather result  */}
 
-      
       {!loading && (!weatherData || error === "City not found.") ? (
         <div>
           <h2 className="text-[28px] font-bold mt-12 text-center">
@@ -92,11 +90,7 @@ export default function WeatherComp({
             <section className="max-w-4xl mx-auto mt-8">
               {loading ? (
                 <div className="rounded-[1.25rem] w-full h-[286px] bg-[url('/Noise.svg')] bg-cover bg-no-repeat flex-center flex-col">
-                  <div
-                    className="dots"
-                    aria-hidden="false"
-                    aria-label="Loading"
-                  >
+                  <div className="dots" aria-label="Loading">
                     <span className="dot"></span>
                     <span className="dot"></span>
                     <span className="dot"></span>
@@ -110,6 +104,7 @@ export default function WeatherComp({
                   <div>
                     <div className="flex items-center gap-3 mb-3">
                       <button
+                        type="button"
                         onClick={handleSavedPlace}
                         title={
                           isSaved

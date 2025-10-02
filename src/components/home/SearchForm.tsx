@@ -8,7 +8,6 @@ import VoiceSearch from "../VoiceSearch";
 import { useCitySuggestions } from "@/hooks/useCitySuggestions";
 import Image from "next/image";
 
-
 export default function SearchForm({ query }: { query: string }) {
   const router = useRouter();
   const [inputValue, setInputValue] = useState(query || "");

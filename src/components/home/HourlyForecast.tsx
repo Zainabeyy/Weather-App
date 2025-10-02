@@ -118,16 +118,17 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
           }}
         >
           <button
+            type="button"
             className="bgContChild rounded-lg py-2 px-2.5 text-preset-base flex items-center gap-3 hover:bg-blue-300 dark:hover:bg-neutral-700 allTransition"
             onClick={() =>
               loading ? setShowDays(false) : setShowDays((prev) => !prev)
             }
           >
-            <p>
+            <span>
               {loading
                 ? "-"
                 : weekDays.find((d) => d.value === selectedDay)?.label}
-            </p>
+            </span>
             <ChevronDown
               size={18}
               className={`${!days ? "rotate-180" : "rotate-0"} allTransition`}
@@ -144,6 +145,7 @@ export default function HourlyForecast({ data, loading }: hourlyForecastProp) {
               {weekDays.map((d) => (
                 <li key={d.value}>
                   <button
+                    type="button"
                     onClick={() => handleSelectedDay(d.value)}
                     className={`text-preset-base hover:bg-blue-200 dark:hover:bg-neutral-700 px-2.5 py-2 rounded-lg w-full allTransition text-left ${
                       selectedDay === d.value ? "bgContChild" : ""

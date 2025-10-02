@@ -46,7 +46,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if(!mounted) return null;
+  if (!mounted) return null;
 
   const logo = mounted
     ? theme === "light"
@@ -77,8 +77,9 @@ export default function Navbar() {
           }`}
         >
           <button
+            type="button"
             onClick={() => setShowNav((prev) => !prev)}
-            aria-label={`${showNav ? 'hide' : 'show'} nav`}
+            aria-label={`${showNav ? "hide" : "show"} nav`}
             className={`py-5 px-1 rounded-tl-3xl rounded-bl-3xl bg-black/70 shadow-2xl md:hidden`}
           >
             <ChevronLeft />

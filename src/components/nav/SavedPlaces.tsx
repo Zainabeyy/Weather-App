@@ -35,10 +35,11 @@ export default function SavedPlaces() {
       className="relative"
     >
       <button
+        type="button"
         onClick={() => setShowPlaces((prev) => !prev)}
         className="buttonCont bgCont bgHover flex-center gap-2 allTransition"
       >
-        <p>Favourite </p>
+        <span>Favourite </span>
         <Star size={16} className="text-yellow-400 fill-yellow-400" />
       </button>
       {showPlaces && (
@@ -55,6 +56,7 @@ export default function SavedPlaces() {
                 >
                   <div className="p-1 rounded-lg flex-between bgHover gap-2 allTransition">
                     <button
+                      type="button"
                       onClick={() =>
                         router.push(`/?query=${encodeURIComponent(item)}`)
                       }
@@ -63,6 +65,7 @@ export default function SavedPlaces() {
                       {item}
                     </button>
                     <button
+                      type="button"
                       onClick={() => removePlace(item)}
                       title="Delete place from saved"
                       className="group p-1"

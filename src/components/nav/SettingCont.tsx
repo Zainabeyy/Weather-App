@@ -97,7 +97,7 @@ export default function SettingCont() {
         className="flex-center gap-1.5 md:gap-2.5 w-fit buttonCont bgCont bgHover allTransition"
       >
         <Settings size={16} />
-        <p className="text-preset-base font-sans">Units</p>
+        <span className="text-preset-base font-sans">Units</span>
         <ChevronDown
           size={18}
           className={`${
@@ -139,11 +139,15 @@ export default function SettingCont() {
           {/* ---- Per-category ---- */}
           {unitCategories.map((item, index) => (
             <div key={item.key}>
-              <p tabIndex={-1} className="pl-2 pt-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-2">
+              <p
+                tabIndex={-1}
+                className="pl-2 pt-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-2"
+              >
                 {item.title}
               </p>
               {[item.unit1, item.unit2].map((unit, i) => (
                 <button
+                  type="button"
                   key={i}
                   role="menuitemradio"
                   aria-checked={units[item.key] === unit.type}
@@ -161,7 +165,7 @@ export default function SettingCont() {
                         : "text-neutral-700 dark:text-neutral-300"
                     }`}
                 >
-                  <p className="text-preset-base">{unit.name}</p>
+                  <span className="text-preset-base">{unit.name}</span>
                   {units[item.key] === unit.type && (
                     <Check size={16} strokeWidth={2} />
                   )}
