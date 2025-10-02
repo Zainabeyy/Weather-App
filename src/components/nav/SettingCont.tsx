@@ -80,6 +80,11 @@ export default function SettingCont() {
           setShowSetting(false);
         }
       }}
+      onClick={(e) => {
+        if (contRef.current?.contains(e.target as Node)) {
+          e.stopPropagation();
+        }
+      }}
     >
       {/* ---- trigger button ---- */}
       <button
@@ -134,7 +139,7 @@ export default function SettingCont() {
           {/* ---- Per-category ---- */}
           {unitCategories.map((item, index) => (
             <div key={item.key}>
-              <p className="pl-2 pt-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-2">
+              <p tabIndex={-1} className="pl-2 pt-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-2">
                 {item.title}
               </p>
               {[item.unit1, item.unit2].map((unit, i) => (

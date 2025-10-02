@@ -72,6 +72,12 @@ Comparison page
 - [lucide-react](https://lucide.dev/) – Icons  
 - [@ducanh2912/next-pwa](https://www.npmjs.com/package/@ducanh2912/next-pwa) – PWA support  
 
+### API used
+
+- open-meteo - weather data
+- flagsapi - to get flags
+- geocoding-api - latitude & longitude 
+
 ### What I learned
 
 - I learned how to use graphs in websites for data comparison.  
