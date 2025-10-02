@@ -14,29 +14,23 @@ export default function Navbar() {
   const [showNav, setShowNav] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
 
-  // ensure this only runs on client
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Inside your Navbar component:
-
   React.useEffect(() => {
-    // Only apply on small screens where the nav is a full-screen overlay (i.e., when showNav is true)
-    const isMobile = window.innerWidth < 768; // Tailwind's 'md' breakpoint
+    const isMobile = window.innerWidth < 768;
 
     if (showNav && isMobile) {
       document.body.style.overflow = "hidden";
     } else {
-      // Restore default scrolling when nav is closed or on desktop
       document.body.style.overflow = "";
     }
 
-    // Cleanup function to ensure overflow is restored when component unmounts
     return () => {
       document.body.style.overflow = "";
     };
-  }, [showNav]); // Rerun this effect whenever showNav changes
+  }, [showNav]);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -51,6 +45,8 @@ export default function Navbar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if(!mounted) return null;
 
   const logo = mounted
     ? theme === "light"
@@ -76,12 +72,13 @@ export default function Navbar() {
           Compare Locations
         </Link>
         <div
-          className={`md:flex-center flex items-start md:flex-row absolute md:static  left-0 h-full w-full z-[999] top-0 md:w-auto md:h-auto right-0 allTransition ${
+          className={`md:flex-center flex items-start md:flex-row fixed md:static  left-0 h-full w-full z-[999] top-0 md:w-auto md:h-auto right-0 allTransition ${
             showNav ? "translate-x-0" : "translate-x-[93%]"
           }`}
         >
           <button
             onClick={() => setShowNav((prev) => !prev)}
+            aria-label={`${showNav ? 'hide' : 'show'} nav`}
             className={`py-5 px-1 rounded-tl-3xl rounded-bl-3xl bg-black/70 shadow-2xl md:hidden`}
           >
             <ChevronLeft />

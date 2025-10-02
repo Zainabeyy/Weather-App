@@ -131,7 +131,7 @@ export default function WeatherComp({
                     </div>
                     <p className="text-preset-lg text-white">{formattedDate}</p>
                   </div>
-                  <div className="flex-between gap-5">
+                  <div className="flex-between flex-wrap gap-5">
                     <Image
                       src={imgUrl}
                       alt="weather icon"
@@ -140,7 +140,7 @@ export default function WeatherComp({
                       unoptimized
                       fetchPriority="high"
                     />
-                    <p className="font-semibold italic text-8xl text-white shrink-0 h-full overflow-hidden w-auto flex-1">
+                    <p className="font-semibold italic text-8xl text-white">
                       {units.temperature === "metric"
                         ? `${Math.round(currentWeatherTemp)}`
                         : `${Math.round(cToF(currentWeatherTemp))}`}

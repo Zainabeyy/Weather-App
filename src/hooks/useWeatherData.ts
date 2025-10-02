@@ -3,58 +3,11 @@
 import React from "react";
 import {
   cityInfoType,
-  GeoCodingResult,
-  ReverseGeocodeResult,
   weatherDataType,
 } from "@/types/type";
+import fetchWeather from "@/directives/fetchWeather";
+import { fetchGeoData, fetchReverseGeocode } from "../directives/geoFunctions";
 
-// ---- fetching data from api ----
-
-async function fetchWeather(lat: number, lon: number, signal: AbortSignal) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation,apparent_temperature,weathercode,uv_index,visibility,surface_pressure&daily=temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset&forecast_days=7&timezone=auto`;
-
-  const res = await fetch(url, { signal });
-  if (!res.ok) {
-    throw new Error(`Weather data fetch failed with status: ${res.status}`);
-  }
-  return res.json();
-}
-
-// ---- function to get lang and long using city ----
-
-async function fetchGeoData(cityName: string, signal: AbortSignal) {
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-    cityName
-  )}&count=1&language=en&format=json`;
-  const res = await fetch(url, { signal });
-  if (!res.ok) {
-    throw new Error(`Geocoding data fetch failed with status: ${res.status}`);
-  }
-  const data = await res.json();
-  if (!data.results || data.results.length === 0) {
-    throw new Error("City not found.");
-  }
-  return data.results[0] as GeoCodingResult;
-}
-
-// ---- function to get city name using lang and long ----
-
-async function fetchReverseGeocode(
-  lat: number,
-  lon: number,
-  signal: AbortSignal
-) {
-  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
-  const res = await fetch(url, { signal });
-  if (!res.ok) {
-    throw new Error(
-      `Reverse geocoding fetch failed with status: ${res.status}`
-    );
-  }
-  return res.json() as Promise<ReverseGeocodeResult>;
-}
-
-// ---- main use hook ----
 
 export default function useWeatherData(cityName?: string) {
   const [weatherData, setWeatherData] = React.useState<weatherDataType | null>(
@@ -67,8 +20,6 @@ export default function useWeatherData(cityName?: string) {
   React.useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
-
-    // ---- main fetch function ----
 
     async function fetchData() {
       setLoading(true);

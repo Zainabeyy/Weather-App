@@ -59,11 +59,11 @@
 
 @layer base {
   *{
-    @apply transition-colors duration-300 ease-in-out max-w-screen;
+    @apply transition-colors duration-300 ease-in-out;
   }
   body {
     font-family: Arial, Helvetica, sans-serif;
-    @apply bg-neutral-0 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-0 text-lg p-4 md:p-6 lg:px-28 lg:py-12;
+    @apply bg-neutral-0 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-0 text-lg p-4 md:p-6 lg:px-28 lg:py-12 max-w-screen overflow-x-hidden;
   }
   th,td{
     @apply bg-blue-200 dark:bg-neutral-700 rounded-xl p-3 px-2 sm:px-4  capitalize text-sm sm:text-lg;
