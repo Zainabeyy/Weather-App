@@ -52,6 +52,8 @@ Comparison page
 - Compare temperature, humidity, wind, precipitation, visibility, and UV inde
 - View a chart showing 7-day temperature changes for both cities
 
+- tested using [pageSpeed](https://pagespeed.web.dev/)
+
 ### Links
 
 - Solution URL: https://github.com/Zainabeyy/Weather-App
@@ -79,7 +81,7 @@ Comparison page
 
 ### Continued development
 
-I want to focus more on SSR, SSG, and other rendering techniques in my future projects. I also want to improve page speed. I would like to use the voice search feature in my other websites as well, and I would also like to create more PWA apps.
+I want to focus more on SSR, SSG, and other rendering techniques in my future projects. I also want to improve page speed. I would like to use the voice search feature in my other websites as well, and I would also like to create more PWA apps. I also want to improve my scores on pageSpeed test for mobile screen size.
 
 ## Author
 
